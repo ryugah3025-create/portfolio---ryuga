@@ -1,0 +1,5 @@
+AuthUserFile /home/users/0/digick.jp-ryuga325/web/works/private/.htpasswd
+AuthGroupFile /dev/null
+AuthName "ryuga325"
+AuthType Basic
+require valid-user

@@ -1,0 +1,277 @@
+@use "responsive" as *;
+
+.sp {
+    display: block;
+
+    @include sp-up {
+        display: none;
+    }
+}
+
+.pc {
+    display: block;
+
+    @include sp {
+        display: none;
+    }
+}
+
+// 見出し
+.heading {
+    font-size: 40px;
+    font-weight: bold;
+
+    &01 {
+        font-size: 64px;
+
+        @include sp {
+            font-size: 48px;
+        }
+    }
+
+    @include sp {
+        font-size: 32px;
+    }
+}
+
+
+//mainテキスト
+.mainvisual {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .mainvisual-wrap {
+        text-align: center;
+        animation: uptext 1s ease;
+
+        p {
+            font-size: 32px;
+            letter-spacing: 1.5px;
+
+            @include sp {
+                font-size: 24px;
+            }
+        }
+    }
+
+    .character {
+        display: block;
+        width: 200px;
+        animation: jump ease-in-out forwards;
+        animation-delay: .7s;
+        animation-duration: .7s;
+        transform: translateY(-100vh);
+    }
+}
+
+// ジャンプ機能
+@keyframes jump {
+    0% {
+        transform: translateY(-100vh);
+    }
+
+    15% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-20vh);
+    }
+
+    45% {
+        transform: translateY(0);
+    }
+
+    60% {
+        transform: translateY(-5vh);
+    }
+
+    75% {
+        transform: translateY(0);
+    }
+
+    90% {
+        transform: translateY(-2vh);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes uptext {
+    0% {
+        transform: translateY(-100vh);
+    }
+
+    20% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-5vh);
+    }
+
+    60% {
+        transform: translateY(0);
+    }
+
+    80% {
+        transform: translateY(-2vh);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+// ページトップに戻るボタン
+#back-bn {
+    position: fixed;
+    right: 80px;
+    bottom: 80px;
+    z-index: 9998;
+
+    @include sp {
+        bottom: 100px;
+        right: 16px;
+    }
+}
+
+
+// ボタン
+.botton-amine {
+    position: relative;
+    z-index: 100;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    outline: none;
+    margin: 40px auto 40px;
+
+    span {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        line-height: 60px;
+        font-size: 32px;
+        border: 1px solid #333;
+        transform-style: preserve-3d;
+        transition: 0.5s;
+    }
+}
+
+.rotateback {
+
+    span:nth-child(1) {
+        background: #fff;
+        color: #333;
+        transform: rotateX(0deg);
+        transform-origin: 0 50% -25px;
+    }
+
+    &:hover span:nth-child(1) {
+        transform: rotateX(90deg);
+    }
+
+    span:nth-child(2) {
+        background: #333;
+        color: #fff;
+        transform: rotateX(-90deg);
+        transform-origin: 0 50% -25px;
+    }
+
+    &:hover span:nth-child(2) {
+        transform: rotateX(0deg);
+    }
+}
+
+// スクロールテキスト
+.scrooll {
+    position: fixed;
+    top: 64%;
+    right: 10%;
+    animation: scroollup 1s ease-in-out infinite;
+
+    @include sp {
+        top: 80%;
+        right: 10%;
+        animation: scroollupsp 1s ease-in-out infinite;
+    }
+
+    span {
+        font-size: 64px;
+        -ms-writing-mode: tb-rl;
+        -webkit-writing-mode: vertical-rl;
+        writing-mode: vertical-rl;
+        position: relative;
+
+        @include sp {
+            font-size: 40px;
+        }
+
+        &::before {
+            content: "";
+            display: block;
+            background-color: #333;
+            height: 100%;
+            width: 2px;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 2px;
+            position: absolute;
+            bottom: 9px;
+            right: -30px;
+            transform: skewY(-30deg);
+            background: #333;
+
+            @include sp {
+                width: 15px;
+                right: -15px;
+                bottom: 5px;
+            }
+
+        }
+    }
+}
+
+@keyframes scroollup {
+    0% {
+        top: 64%;
+    }
+
+    50% {
+        top: 56%;
+    }
+
+    100% {
+        top: 64%;
+    }
+}
+
+@keyframes scroollupsp {
+    0% {
+        top: 80%;
+    }
+
+    50% {
+        top: 72%;
+    }
+
+    100% {
+        top: 80%;
+    }
+}
