@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+  <meta name="description" content="月額料金で、公開後のホームページ更新・改善をまるごとお任せいただけるWeb運用パートナープラン。モニター価格のご案内です。">
+  <link rel="icon" href="/images/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web運用パートナープラン モニター価格のご案内</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap">
+
+<style>
+  :root{
+    color-scheme: light;
+    --paper:        #FFFFFF;
+    --paper-raised: #FFFFFF;
+    --paper-sunken: #F1F4F9;
+    --ink:          #222222;
+    --ink-soft:     #555555;
+    --ink-faint:    #999999;
+    --line:         #E0E0E0;
+    --line-strong:  #333333;
+    --navy:         #1D3A5F;
+    --navy-deep:    #12213A;
+    --navy-soft:    #EBEFF3;
+    --gold:         #1D3A5F;
+    --gold-strong:  #16314F;
+    --gold-soft:    #EBEFF3;
+    --accent-grad:  linear-gradient(90deg, #142943 0%, #2C527F 100%);
+    --on-navy:      #FFFFFF;
+    --shadow: 0 12px 30px -10px rgba(18,33,58,0.22);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --paper:        #14161A;
+      --paper-raised: #1C1F24;
+      --paper-sunken: #0F1114;
+      --ink:          #EDEDEA;
+      --ink-soft:     #B7B9B4;
+      --ink-faint:    #83857E;
+      --line:         #2C2F34;
+      --line-strong:  #C9CBC6;
+      --navy:         #6DB2F5;
+      --navy-deep:    #F2F2EE;
+      --navy-soft:    rgba(109,178,245,0.14);
+      --gold:         #6DB2F5;
+      --gold-strong:  #8FC4F7;
+      --gold-soft:    rgba(109,178,245,0.14);
+      --on-navy:      #0F1114;
+      --shadow: 0 10px 30px rgba(78,219,214,0.08);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --paper:        #14161A;
+    --paper-raised: #1C1F24;
+    --paper-sunken: #0F1114;
+    --ink:          #EDEDEA;
+    --ink-soft:     #B7B9B4;
+    --ink-faint:    #83857E;
+    --line:         #2C2F34;
+    --line-strong:  #C9CBC6;
+    --navy:         #6DB2F5;
+    --navy-deep:    #F2F2EE;
+    --navy-soft:    rgba(109,178,245,0.14);
+    --gold:         #6DB2F5;
+    --gold-strong:  #8FC4F7;
+    --gold-soft:    rgba(109,178,245,0.14);
+    --on-navy:      #0F1114;
+    --shadow: 0 10px 30px rgba(78,219,214,0.08);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    overflow-x:hidden;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Serif JP',serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--navy-soft); color:var(--ink); }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+
+  /* ---------- scroll reveal ---------- */
+  .js-reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity 1.3s cubic-bezier(0.2,0.6,0.2,1), transform 1.3s cubic-bezier(0.2,0.6,0.2,1);
+  }
+  .js-reveal.is-visible{ opacity:1; transform:translateY(0); }
+  .js-stagger > *{
+    opacity:0; transform:translateY(16px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .js-stagger.is-visible > *{ opacity:1; transform:translateY(0); }
+  .js-stagger.is-visible > *:nth-child(1){ transition-delay:0.05s; }
+  .js-stagger.is-visible > *:nth-child(2){ transition-delay:0.18s; }
+  .js-stagger.is-visible > *:nth-child(3){ transition-delay:0.31s; }
+  .js-stagger.is-visible > *:nth-child(4){ transition-delay:0.44s; }
+  .js-stagger.is-visible > *:nth-child(5){ transition-delay:0.57s; }
+  .js-stagger.is-visible > *:nth-child(6){ transition-delay:0.70s; }
+
+  /* ---------- hover polish ---------- */
+  .service-item, .price-card, .voice-item{ transition:transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+  .service-item:hover{ transform:translateY(-3px); border-color:var(--navy); box-shadow:0 12px 24px -14px rgba(58,150,243,0.35); }
+  .industry-item{ transition:background-color 0.25s ease, padding-left 0.25s ease; }
+  .industry-item:hover{ background-color:var(--navy-soft); padding-left:10px; }
+  .benefit-row{ transition:background-color 0.25s ease; }
+  .benefit-row:hover{ background-color:var(--navy-soft); }
+  .cta-btn{ transition:transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease; }
+  .cta-btn:hover{ transform:translateY(-2px) scale(1.03); box-shadow:0 14px 28px -12px rgba(0,0,0,0.4); }
+
+  .page{ max-width:1200px; margin:0 auto; padding:0 24px 96px; }
+
+  h1,h2,h3{
+    font-family:'Shippori Mincho B1','Noto Serif JP',serif;
+    font-weight:600;
+    color:var(--ink);
+    text-wrap:balance;
+    margin:0;
+  }
+
+  .eyebrow{
+    font-family:'Noto Serif JP',serif;
+    font-size:12.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin:0 0 16px;
+    display:flex; align-items:center; gap:10px;
+    font-weight:700;
+  }
+  .eyebrow::before{
+    content:""; display:inline-block; width:24px; height:3px; background:var(--accent-grad);
+  }
+
+  p{ margin:0 0 16px; font-size:16px; color:var(--ink-soft); max-width:46em; }
+
+  section{ padding-top:80px; margin-top:0; background:var(--paper); position:relative; z-index:2; }
+
+  .section-head{ margin-bottom:32px; }
+  .section-head h2{ font-size:28px; line-height:1.5; font-weight:700; }
+  .section-head .section-num{
+    font-family:'Noto Serif JP',serif; font-size:12.5px; color:var(--gold-strong);
+    letter-spacing:0.06em; display:block; margin-bottom:10px; font-weight:700;
+  }
+
+  /* ---------- Hero (scroll-pinned reveal) ---------- */
+  .hero-pin-wrap{
+    height:300vh; position:relative; z-index:0;
+    width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);
+  }
+  header.hero{
+    position:sticky; top:0; z-index:0;
+    min-height:100vh; min-height:100svh;
+    display:flex; flex-direction:column; justify-content:center;
+    overflow:hidden; isolation:isolate;
+    padding:40px 40px;
+  }
+  .hero-inner{
+    position:relative; z-index:1;
+    width:100%; max-width:1200px; margin:0 auto;
+    display:flex; flex-direction:column; align-items:flex-start;
+  }
+  .hero-inner > *{ position:relative; }
+
+  .hero-bg-svg{
+    position:absolute; z-index:0; left:0; bottom:0; width:100%;
+    height:min(60vh, 480px);
+    pointer-events:none;
+  }
+  .hero-bg-svg .curve{ stroke-dasharray:1600; stroke-dashoffset:1600; }
+  .hero-bg-svg .curve.play{ animation:heroDrawLine 3.2s cubic-bezier(0.3,0.6,0.2,1) forwards; }
+  @keyframes heroDrawLine{ to{ stroke-dashoffset:0; } }
+  .hero-bg-svg .fill{ opacity:0; }
+  .hero-bg-svg .fill.play{ animation:heroFadeInFill 1.4s ease 2.1s forwards; }
+  @keyframes heroFadeInFill{ to{ opacity:1; } }
+  .hero-bg-svg .dot{ opacity:0; transform:scale(0.3); transform-origin:900px 20px; }
+  .hero-bg-svg .dot.play{ animation:heroPopDot 0.5s cubic-bezier(0.34,1.56,0.64,1) 3s forwards; }
+  @keyframes heroPopDot{ to{ opacity:1; transform:scale(1); } }
+
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:'Shippori Mincho B1','Noto Serif JP',serif; font-size:13px; font-weight:700;
+    letter-spacing:0.14em; color:var(--navy); background:var(--paper); border:1.5px solid var(--navy);
+    padding:9px 18px; border-radius:999px;
+    opacity:0; transform:translateY(8px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .hero-badge.is-in{ opacity:1; transform:translateY(0); }
+  .hero-badge i{ width:7px; height:7px; border-radius:50%; background:var(--navy); display:inline-block; }
+
+  header.hero h1{
+    width:100%;
+    font-family:'Shippori Mincho B1','Noto Serif JP',serif;
+    font-size:clamp(20px,4.6vw,42px); line-height:1.7; font-weight:600; color:var(--ink);
+    margin-top:22px; position:relative;
+    white-space:nowrap;
+  }
+  @media (max-width:640px){
+    header.hero h1{
+      white-space:normal;
+      font-size:clamp(20px,7vw,30px);
+    }
+  }
+  header.hero h1 .char{
+    display:inline-block; opacity:0; transform:translateY(10px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  header.hero h1 .char.is-in{ opacity:1; transform:translateY(0); }
+
+  .hero-statrow{
+    width:100%;
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+    margin-top:18px;
+  }
+  .hero-num{
+    font-family:'Shippori Mincho B1','Noto Serif JP',serif; font-size:44px; font-weight:800; color:var(--navy);
+    opacity:0; transform:translateY(10px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  .hero-num.is-in{ opacity:1; transform:translateY(0); }
+  .hero-num small{ font-size:16px; font-weight:500; margin-left:2px; vertical-align:middle; }
+  .hero-num-odometer{ display:inline-flex; }
+  .hero-od-digit{ display:inline-block; overflow:hidden; height:1em; position:relative; width:0.62em; }
+  .hero-od-digit .track{ position:absolute; left:0; top:0; transform:translateY(-10em); }
+  .hero-od-digit .track span{ display:block; height:1em; line-height:1; }
+  .hero-od-digit .track.play{ animation:heroOdometerFlip 0.9s cubic-bezier(0.2,0.8,0.2,1) both; }
+  @keyframes heroOdometerFlip{ from{ transform:translateY(0); } to{ transform:translateY(-10em); } }
+  .hero-od-digit:nth-child(2) .track.play{ animation-delay:0.15s; }
+
+  .hero-stat-desc{
+    font-size:13px; color:var(--ink-soft); line-height:1.8;
+    opacity:0; transform:translateY(10px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .hero-stat-desc.is-in{ opacity:1; transform:translateY(0); }
+
+  /* wrapper that rises up and fully covers the pinned FV once its scroll sequence ends.
+     margin-top:-100vh borrows exactly one viewport-height of scroll from the tail of the
+     sticky hero's pin range, so the cover completes right as the hero would naturally release.
+     background/shadow/bleed live on this outer div; the <section> inside just holds the
+     max-width:1200px content, matching the hero-inner pattern. */
+  .section-cover-bleed{
+    position:relative; z-index:2;
+    background:var(--paper);
+    width:100vw;
+    margin-top:-100vh;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    padding:56px 16px 16px;
+    border-radius:28px 28px 0 0;
+    box-shadow:0 -20px 40px -24px rgba(0,0,0,0.18);
+  }
+  @media (max-width:640px){
+    .section-cover-bleed{ padding-left:8px; padding-right:8px; }
+  }
+  .section-cover{
+    margin-top:0; padding-top:0;
+    max-width:1200px;
+    margin-left:auto; margin-right:auto;
+  }
+  .section-head .section-num{
+    display:inline-block;
+    opacity:0; transform:translateY(18px);
+    transition:opacity 0.5s cubic-bezier(0.34,1.56,0.64,1), transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .js-reveal.is-visible .section-num{ opacity:1; transform:translateY(0); }
+  .section-head h2 .char{
+    display:inline-block; opacity:0; transform:translateY(10px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  .section-head h2 .char.is-in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- cross-industry proof ---------- */
+  .stat-hero{
+    display:flex; align-items:flex-end; gap:24px; flex-wrap:wrap;
+    padding-bottom:28px; border-bottom:2px solid var(--ink);
+  }
+  .stat-hero .num{
+    font-family:'Noto Serif JP',serif; font-weight:700; color:var(--navy);
+    font-size:clamp(52px,9vw,76px); line-height:0.9; letter-spacing:-0.02em;
+  }
+  .stat-hero .num small{ font-size:19px; font-weight:500; margin-left:4px; color:var(--ink-soft); }
+  .stat-hero .stat-desc{ font-size:15px; color:var(--ink-soft); max-width:30em; padding-bottom:8px; margin:0; }
+
+  .example-lede{
+    font-size:12.5px; color:var(--ink-faint); margin:32px 0 16px;
+    font-family:'Noto Serif JP',serif; letter-spacing:0.04em; font-weight:600;
+  }
+  .industry-row{ display:flex; flex-direction:column; }
+  .industry-item{
+    display:grid; grid-template-columns:96px 1fr; align-items:baseline; gap:20px;
+    padding:20px 0; border-bottom:1px solid var(--line);
+  }
+  @media (max-width:520px){ .industry-item{ grid-template-columns:1fr; gap:6px; } }
+  .industry-item .tag{
+    font-family:'Noto Serif JP',serif; font-size:11px; letter-spacing:0.04em;
+    color:var(--navy-deep); background:var(--navy-soft); padding:5px 10px; border-radius:4px;
+    text-align:center; width:fit-content;
+  }
+  .industry-item .name-line{ display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  .industry-item .name{ font-size:18px; font-weight:700; color:var(--ink); }
+  .industry-item .desc{ font-size:14px; color:var(--ink-faint); }
+  .converge{
+    margin-top:32px; font-size:19px; color:var(--ink);
+    font-family:'Noto Serif JP',serif; font-weight:700; text-wrap:balance;
+  }
+  .converge strong{ color:var(--navy-deep); border-bottom:2px solid var(--gold); }
+
+  /* ---------- service list ---------- */
+  .service-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  }
+  @media (max-width:560px){ .service-grid{ grid-template-columns:1fr; } }
+  .service-item{
+    background:var(--paper-raised); padding:20px 20px; border:1px solid var(--line); border-radius:8px;
+  }
+  .service-item .k{
+    font-family:'Noto Serif JP',serif; font-size:11px; color:var(--navy);
+    text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:8px; font-weight:700;
+  }
+  .service-item .v{ font-size:15px; color:var(--ink); font-weight:500; }
+  .service-item .v-list{ margin:0; padding-left:18px; font-size:14px; color:var(--ink); font-weight:500; }
+  .service-item .v-list li{ margin-bottom:5px; }
+  .service-item .v-list li:last-child{ margin-bottom:0; }
+
+  /* ---------- benefit (before/after) ---------- */
+  .benefit-list{ display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .benefit-row{ display:grid; grid-template-columns:1fr 28px 1fr; align-items:center; background:var(--paper-raised); padding:20px 22px; gap:12px; }
+  @media (max-width:640px){ .benefit-row{ grid-template-columns:1fr; gap:8px; padding:20px 18px; } }
+  .benefit-before{ font-size:14.5px; color:var(--ink-faint); transition:font-size 0.45s ease, color 0.45s ease; }
+  .benefit-before::before{ content:"今のまま：　"; font-family:'Noto Serif JP',serif; font-size:11px; color:var(--ink-faint); display:block; margin-bottom:4px; letter-spacing:0.02em; }
+  .benefit-arrow{ text-align:center; color:var(--gold-strong); font-size:18px; font-weight:700; }
+  @media (max-width:640px){ .benefit-arrow{ text-align:left; } .benefit-arrow::before{ content:"↓"; } .benefit-arrow span{ display:none; } }
+  .benefit-after{ font-size:15.5px; color:var(--ink); font-weight:700; transition:font-size 0.45s ease, color 0.45s ease; }
+  .benefit-after::before{ content:"お任せいただくと：　"; font-family:'Noto Serif JP',serif; font-size:11px; color:var(--navy); display:block; margin-bottom:4px; font-weight:700; letter-spacing:0.02em; }
+  /* SP: scroll-linked — only the "after" side grows, per row */
+  @media (max-width:640px){
+    .benefit-row.is-after-active .benefit-after{ font-size:19px; color:var(--navy-deep); }
+  }
+  /* PC: no scroll-linked growth — hover emphasizes the "after" side instead */
+  @media (min-width:641px){
+    .benefit-row:hover .benefit-after{ font-size:19px; color:var(--navy-deep); }
+  }
+
+  /* ---------- diagnostic checklist ---------- */
+  .diag-intro{ font-size:16px; color:var(--ink-soft); max-width:38em; }
+  .diag-list{ display:flex; flex-direction:column; margin-top:8px; }
+  .diag-item{
+    display:flex; align-items:flex-start; gap:14px; padding:16px 4px; border-bottom:1px solid var(--line);
+    font-size:15.5px; color:var(--ink);
+  }
+  .diag-item .box{
+    flex-shrink:0; width:8px; height:8px; margin-top:8px; border-radius:50%;
+    background:var(--line-strong);
+  }
+  .diag-verdict{
+    margin-top:28px; padding:22px 24px; background:var(--navy-soft); border-radius:10px;
+    font-size:15.5px; color:var(--ink); line-height:1.9;
+  }
+  .diag-verdict strong{ color:var(--navy-deep); font-weight:700; }
+
+  .cause-list{ display:flex; flex-direction:column; gap:28px; }
+  .cause-item{ display:flex; gap:18px; }
+  .cause-num{
+    flex-shrink:0; font-family:'Noto Serif JP',serif; font-size:22px; font-weight:700; color:var(--line-strong);
+    width:36px;
+  }
+  .cause-item h3{ font-size:17.5px; font-weight:700; font-family:'Noto Serif JP',serif; margin-bottom:8px; }
+  .cause-item p{ font-size:14.5px; color:var(--ink-soft); margin:0; }
+
+  .honest-note{
+    margin-top:36px; padding:18px 20px; border:1px dashed var(--line-strong); border-radius:10px;
+    font-size:13.5px; color:var(--ink-soft); line-height:1.8;
+  }
+  .honest-note strong{ color:var(--ink); }
+
+  .emphasis-callout{
+    margin-top:32px; padding:24px 26px;
+    background:var(--navy-deep); color:#FFFFFF;
+    border-radius:10px;
+    font-size:17px; font-weight:700; line-height:1.8;
+    font-family:'Noto Serif JP',serif;
+  }
+  .emphasis-callout strong{
+    color:#FFFFFF; text-decoration:underline;
+    text-decoration-color:rgba(255,255,255,0.5); text-underline-offset:4px;
+  }
+
+  /* ---------- voice (slideshow) ---------- */
+  .voice-viewport{
+    position:relative;
+    transition:height 0.4s ease;
+    touch-action:pan-y; cursor:grab; user-select:none;
+  }
+  .voice-viewport:active{ cursor:grabbing; }
+  .voice-slide{
+    position:absolute; top:0; left:0; right:0;
+    display:flex; gap:24px;
+    opacity:0; transform:translateY(10px);
+    transition:opacity 1.2s ease, transform 1.2s ease;
+    pointer-events:none;
+  }
+  .voice-slide.is-active{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  .voice-rule{ flex:0 0 auto; width:2px; background:var(--accent-grad); border-radius:2px; }
+  .voice-body{ flex:1; }
+  .voice-text{
+    font-size:20px; color:var(--ink); line-height:1.8; margin:0;
+    font-family:'Shippori Mincho B1','Noto Serif JP',serif; font-weight:600; text-wrap:balance;
+  }
+  .voice-attr{
+    margin-top:16px; font-size:12.5px; color:var(--ink-faint);
+    font-family:'Noto Serif JP',serif; letter-spacing:0.04em;
+  }
+  .voice-progress{
+    max-width:100%; margin-top:28px; height:2px; background:var(--line); position:relative; border-radius:2px; overflow:hidden;
+  }
+  .voice-progress span{
+    position:absolute; left:0; top:0; bottom:0; width:0%;
+    background:var(--accent-grad);
+  }
+
+  /* ---------- pricing ---------- */
+  .price-headline{
+    position:relative;
+    padding:40px 28px 34px;
+    margin-bottom:28px;
+    background:var(--navy-deep);
+    border-radius:14px;
+    overflow:hidden;
+    text-align:center;
+  }
+  .price-headline::before{
+    content:"";
+    position:absolute; inset:0;
+    background:var(--accent-grad);
+    opacity:0.14;
+    pointer-events:none;
+  }
+  .price-headline-reg{
+    position:relative;
+    font-size:14px; color:rgba(255,255,255,0.55); font-weight:500; letter-spacing:0.02em;
+  }
+  .price-headline-reg .strike{ text-decoration:line-through; text-decoration-color:rgba(255,255,255,0.4); }
+  .price-headline-now{
+    position:relative;
+    display:flex; align-items:flex-end; justify-content:center; gap:6px; margin-top:10px;
+  }
+  .price-headline-label{
+    align-self:flex-start; margin-top:14px;
+    font-size:14px; font-weight:700; color:#FFFFFF;
+    background:var(--accent-grad); padding:4px 10px; border-radius:999px;
+  }
+  .price-headline-num{
+    font-size:clamp(48px,11vw,80px); font-weight:900; color:#FFFFFF; line-height:1;
+    letter-spacing:-0.01em; font-variant-numeric:tabular-nums;
+  }
+  .price-headline-unit{
+    align-self:flex-end; margin-bottom:8px;
+    font-size:16px; font-weight:700; color:rgba(255,255,255,0.75);
+  }
+  .price-card{
+    background:var(--paper-raised); border:1px solid var(--line);
+    padding:34px 28px 30px; box-shadow:var(--shadow); border-radius:10px;
+  }
+  .curve-heading{ margin:0 0 20px; font-size:13px; font-weight:700; color:var(--ink-soft); }
+  figure.price-figure{ margin:0; }
+  figure.price-figure svg{ width:100%; height:auto; display:block; overflow:visible; }
+  figure.price-figure text{ font-family:'Noto Serif JP',serif; }
+  .curve-label{ fill:var(--ink-faint); font-size:11.5px; opacity:0; transition:opacity 1s ease 1.6s; }
+  .phase-tag{ fill:var(--ink-soft); font-size:12.5px; font-weight:700; letter-spacing:0.02em; }
+  .price-now{ fill:var(--navy); font-size:23px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .price-now.is-reg{ fill:var(--navy-deep); }
+  .price-off{ fill:#2E7D4F; font-size:11.5px; font-weight:700; }
+  .price-reg{ fill:var(--ink-faint); font-size:11px; }
+  figcaption{ text-align:center; margin-top:24px; font-size:12.5px; color:var(--ink-faint); line-height:1.9; }
+
+  /* ---------- price chart animation ---------- */
+  .price-figure .curve-area{ opacity:0; transition:opacity 1.4s ease 0.9s; }
+  .price-figure .curve-line{
+    stroke-dasharray:1200; stroke-dashoffset:1200;
+    transition:stroke-dashoffset 2s cubic-bezier(0.3,0.6,0.2,1);
+  }
+  .price-figure.is-drawn .curve-area{ opacity:1; }
+  .price-figure.is-drawn .curve-line{ stroke-dashoffset:0; }
+  .price-figure.is-drawn .curve-label{ opacity:1; }
+  .price-figure .phase-rect{
+    transform-box:fill-box; transform-origin:bottom; transform:scaleY(0);
+    transition:transform 0.85s cubic-bezier(0.2,0.6,0.2,1);
+  }
+  .price-figure.is-drawn .phase-rect:nth-of-type(1){ transition-delay:0.1s; }
+  .price-figure.is-drawn .phase-rect:nth-of-type(2){ transition-delay:0.55s; }
+  .price-figure.is-drawn .phase-rect:nth-of-type(3){ transition-delay:1.0s; }
+  .price-figure.is-drawn .phase-rect{ transform:scaleY(1); }
+  .price-figure .phase-fade{ opacity:0; transition:opacity 0.7s ease; }
+  .price-figure.is-drawn .phase-fade-1{ transition-delay:0.55s; }
+  .price-figure.is-drawn .phase-fade-2{ transition-delay:1.0s; }
+  .price-figure.is-drawn .phase-fade-3{ transition-delay:1.45s; }
+  .price-figure.is-drawn .phase-fade{ opacity:1; }
+
+  .price-reason{
+    margin-top:20px; padding:20px 22px; border-left:3px solid var(--navy); background:var(--navy-soft);
+    font-size:13.5px; color:var(--ink-soft); line-height:2; border-radius:0 8px 8px 0;
+  }
+  .price-reason strong{ color:var(--ink); font-weight:700; }
+
+  /* ---------- process timeline (scroll-linked fill) ---------- */
+  .timeline{ position:relative; padding-left:40px; }
+  .timeline-rail{
+    position:absolute; left:19px; top:8px; bottom:8px; width:2px;
+    background:var(--line);
+  }
+  .timeline-rail-fill{
+    position:absolute; left:0; top:0; width:100%; height:0%;
+    background:var(--navy);
+    transition:height 0.15s linear;
+  }
+  .timeline-item{ position:relative; padding-bottom:44px; }
+  .timeline-item:last-child{ padding-bottom:0; }
+  .timeline-item::before{
+    content:""; position:absolute; left:-24px; top:7px; width:8px; height:8px;
+    border-radius:50%; background:var(--line-strong); box-shadow:0 0 0 3px var(--paper);
+    transition:background-color 0.5s ease;
+  }
+  .timeline-item.is-active::before{ background:var(--navy); }
+  .timeline-item.is-final.is-active::before{ background:var(--navy-deep); }
+  .timeline-badge{
+    font-family:'Noto Serif JP',serif; font-size:11.5px; color:var(--navy-deep); font-weight:700; letter-spacing:0.04em;
+    background:var(--navy-soft); padding:4px 10px; border-radius:4px; display:inline-block;
+  }
+  .timeline-item.is-final .timeline-badge{ color:#FFFFFF; background:var(--navy-deep); }
+  .timeline-item h3{
+    font-size:21px; margin-top:12px; font-weight:700; color:var(--ink);
+    transition:font-size 0.5s ease, color 0.5s ease;
+  }
+  .timeline-item.is-active h3{ font-size:25px; color:var(--navy-deep); }
+  .timeline-item ul{ margin:14px 0 0; padding-left:20px; font-size:15px; color:var(--ink); transition:font-size 0.5s ease; }
+  .timeline-item li{ margin-bottom:8px; }
+  .timeline-item.is-active ul{ font-size:16.5px; }
+
+  /* ---------- faq (accordion) ---------- */
+  .faq-list{ display:flex; flex-direction:column; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-item:first-child{ border-top:1px solid var(--line); }
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; cursor:pointer;
+    padding:20px 4px; display:flex; align-items:center; gap:14px;
+    font-family:'Noto Serif JP',serif; font-weight:700; font-size:15.5px; color:var(--ink);
+  }
+  .faq-q .mark{
+    color:var(--navy); font-family:'Noto Serif JP',serif; flex-shrink:0; width:20px;
+  }
+  .faq-q .q-text{ flex:1; }
+  .faq-q .chevron{
+    flex-shrink:0; width:20px; height:20px; position:relative;
+  }
+  .faq-q .chevron::before, .faq-q .chevron::after{
+    content:""; position:absolute; background:var(--ink-faint); transition:transform 0.25s ease;
+  }
+  .faq-q .chevron::before{ width:100%; height:2px; top:50%; left:0; transform:translateY(-50%); }
+  .faq-q .chevron::after{ width:2px; height:100%; left:50%; top:0; transform:translateX(-50%); }
+  .faq-item.is-open .chevron::after{ transform:translateX(-50%) rotate(90deg); opacity:0; }
+  .faq-a{
+    height:0; overflow:hidden; transition:height 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .faq-a-inner{ padding:0 4px 22px 34px; font-size:14.5px; color:var(--ink-soft); }
+
+  .fine-note{ margin-top:24px; font-size:12.5px; color:var(--ink-faint); max-width:38em; }
+
+  /* ---------- CTA ---------- */
+  .cta-section{ margin-top:80px; }
+  .cta-card{
+    background:var(--navy-deep);
+    color:var(--on-navy);
+    padding:48px 32px;
+    text-align:center;
+    border-radius:12px;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .cta-card{ background:var(--paper-sunken); border:1px solid var(--line-strong); } }
+  :root[data-theme="dark"] .cta-card{ background:var(--paper-sunken); border:1px solid var(--line-strong); }
+  .cta-card h2{ font-size:25px; color:var(--on-navy); font-weight:700; }
+  .cta-card p{ color:var(--on-navy); opacity:0.82; max-width:28em; margin:16px auto 0; }
+  .cta-btn{
+    display:inline-block; margin-top:24px;
+    background:#FFFFFF; color:var(--navy-deep); border:1px solid #FFFFFF;
+    font-weight:700; font-size:17px;
+    padding:20px 44px; border-radius:8px;
+    font-family:'Noto Serif JP',serif;
+    text-decoration:none;
+    letter-spacing:0.02em;
+  }
+  .cta-btn:hover{ background:var(--navy-deep); color:#FFFFFF; border-color:#FFFFFF; }
+
+  footer.foot{
+    margin-top:56px; padding-top:22px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-faint); max-width:38em;
+    font-family:'Noto Serif JP',serif;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero-pin-wrap">
+    <header class="hero js-reveal">
+      <svg class="hero-bg-svg" id="heroBgSvg" viewBox="0 0 900 400" preserveAspectRatio="none" fill="none">
+        <defs>
+          <linearGradient id="heroFillGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1D3A5F" stop-opacity="0.07"/>
+            <stop offset="100%" stop-color="#1D3A5F" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path class="fill" d="M 0 370 C 240 356, 460 310, 620 240 C 760 176, 840 90, 900 20 L 900 400 L 0 400 Z" fill="url(#heroFillGrad)"/>
+        <path class="curve" d="M 0 370 C 240 356, 460 310, 620 240 C 760 176, 840 90, 900 20" stroke="#1D3A5F" stroke-opacity="0.13" stroke-width="2" stroke-linecap="round"/>
+        <circle class="dot" cx="900" cy="20" r="4" fill="#1D3A5F" fill-opacity="0.2"/>
+      </svg>
+      <div class="hero-inner">
+        <span class="hero-badge" id="heroBadge"><i></i>モニター募集中</span>
+        <h1 id="heroHeadline">今のホームページに、専属のWeb担当を。</h1>
+        <div class="hero-statrow">
+          <div class="hero-num" id="heroNum">
+            <span class="hero-num-odometer" id="heroOdometer">
+              <span class="hero-od-digit"><span class="track"><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><span>0</span><span>3</span></span></span><span class="hero-od-digit"><span class="track"><span>9</span><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><span>0</span><span>0</span></span></span>
+            </span><small>社以上</small>
+          </div>
+          <div class="hero-stat-desc" id="heroStatDesc">これまでに、ホームページを<br>制作・運用してきました</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="section-cover-bleed">
+    <section class="js-reveal section-cover">
+      <div class="section-head">
+        <span class="section-num">01 — 心当たり</span>
+        <h2>こんな状態、心当たりありませんか</h2>
+      </div>
+      <p class="diag-intro">ホームページは既にある。<br>でも、思うような結果につながっていない——そんな状態で立ち止まっている方に向けた内容です。</p>
+      <div class="diag-list js-stagger">
+        <div class="diag-item"><span class="box"></span>ホームページはあるが、何年も内容を更新していない</div>
+        <div class="diag-item"><span class="box"></span>問い合わせフォームはあるのに、月に数件も来ない</div>
+        <div class="diag-item"><span class="box"></span>Googleマップで自社を検索しても、上位に出てこない</div>
+        <div class="diag-item"><span class="box"></span>アクセス解析を見たことがない、または見方が分からない</div>
+        <div class="diag-item"><span class="box"></span>過去に自分で更新しようとしたが、時間が取れず続かなかった</div>
+        <div class="diag-item"><span class="box"></span>制作会社に一度作ってもらったきり、その後の相談先がない</div>
+      </div>
+      <div class="diag-verdict">
+        1つでも当てはまったなら、原因は<strong>「サイトの出来」ではなく「公開後、誰も手を入れていないこと」</strong>かもしれません。<br>ホームページは、作った瞬間には検索にもほとんど表示されず、運用・更新をし続けて初めて集客力を持ちます。
+      </div>
+    </section>
+  </div>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">02 — 原因</span>
+      <h2>なぜ、サイトがあるのに集客できないのか</h2>
+    </div>
+    <div class="cause-list js-stagger">
+      <div class="cause-item">
+        <span class="cause-num">01</span>
+        <div>
+          <h3>公開後の体制が、そもそも設計されていない</h3>
+          <p>多くのホームページは「作って終わり」になっています。検索エンジンにもGoogleマップにも、継続的な更新があって初めて評価されます。作った時点がゴールになっていると、そこから先は何も動きません。</p>
+        </div>
+      </div>
+      <div class="cause-item">
+        <span class="cause-num">02</span>
+        <div>
+          <h3>数字を見ていないから、何が悪いか分からない</h3>
+          <p>アクセス数・問い合わせ数の推移を見ないまま運用していると、「なんとなく良くない気がする」で止まってしまいます。原因が分からなければ、次の一手も打てません。</p>
+        </div>
+      </div>
+      <div class="cause-item">
+        <span class="cause-num">03</span>
+        <div>
+          <h3>更新する時間も専門知識もない</h3>
+          <p>これは経営者の力不足ではなく、当然のことです。本業をしながらサイト運用の勉強をして、毎月運用（情報の発信など）をし続けるのは、現実的に難しいことがほとんどです。</p>
+        </div>
+      </div>
+    </div>
+    <div class="emphasis-callout">だからこそ、この3つを埋める<strong>「運用担当」</strong>として、月額でお任せいただく形にしています。</div>
+    <div class="honest-note">
+      正直にお伝えすると、公開したその日に問い合わせが殺到するような魔法ではありません。<br>
+      ただ、サイトの目的（採用・集客・信頼材料）に合わせて、掲載する内容や見せ方を変えていくだけで、<strong>確実に成果は出ます。</strong>
+    </div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">03 — お任せいただくと</span>
+      <h2>何が変わるか</h2>
+    </div>
+    <div class="benefit-list js-stagger">
+      <div class="benefit-row">
+        <div class="benefit-before">更新が後回しになり、気づけば情報が古いまま</div>
+        <div class="benefit-arrow"><span>→</span></div>
+        <div class="benefit-after">気づいた時にすぐ直せる。機会損失を防げる</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-before">検索やGoogleマップで見つけてもらえていない</div>
+        <div class="benefit-arrow"><span>→</span></div>
+        <div class="benefit-after">MEO整備で、新規のお問い合わせの入口が増える</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-before">表示が重い・スマホで見づらく、離脱されている</div>
+        <div class="benefit-arrow"><span>→</span></div>
+        <div class="benefit-after">表示速度・スマホ対応を整え、信頼される見た目に</div>
+      </div>
+      <div class="benefit-row">
+        <div class="benefit-before">良くなっているか分からないまま、なんとなく放置</div>
+        <div class="benefit-arrow"><span>→</span></div>
+        <div class="benefit-after">毎月数字を見ながら、次の一手が分かる状態に</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">04 — 実績</span>
+      <h2>多種多様な業界の制作・運用をやってきました</h2>
+    </div>
+    <div class="stat-hero">
+      <div class="num"><span id="statNum" data-count-to="30">0</span><small>社以上</small></div>
+      <p class="stat-desc">これまで30社以上の会社の制作・運用を手掛けてきました。会社によって、ホームページを使う目的は異なるため、それぞれの目的に合わせて見せ方や運用方法を変えながら対応しています。</p>
+    </div>
+    <p class="example-lede">&gt; 一例</p>
+    <div class="industry-row js-stagger">
+      <div class="industry-item">
+        <span class="tag">建設</span>
+        <div>
+          <div class="name-line"><span class="name">建築設計事務所</span><span class="desc">コーポレートサイトの保守・運用</span></div>
+        </div>
+      </div>
+      <div class="industry-item">
+        <span class="tag">医療・介護</span>
+        <div>
+          <div class="name-line"><span class="name">訪問看護ステーション</span><span class="desc">問い合わせ導線の追加・効果計測</span></div>
+        </div>
+      </div>
+      <div class="industry-item">
+        <span class="tag">美容</span>
+        <div>
+          <div class="name-line"><span class="name">ネイルサロン</span><span class="desc">予約導線・スマホ表示の改善</span></div>
+        </div>
+      </div>
+      <div class="industry-item">
+        <span class="tag">飲食</span>
+        <div>
+          <div class="name-line"><span class="name">ラーメン店</span><span class="desc">メニュー更新・来店導線の整理</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">05 — サービス内容</span>
+      <h2>お任せいただいたあと、月額で対応できること</h2>
+    </div>
+    <div class="service-grid js-stagger">
+      <div class="service-item">
+        <span class="k">更新・修正</span>
+        <ul class="v-list">
+          <li>ブログ・お知らせの更新</li>
+          <li>写真・料金・営業時間などの情報更新</li>
+          <li>キャンペーンページの追加・差し替え（容量により追加料金が発生する場合があります）</li>
+          <li>サイト構成そのものの見直し・改修</li>
+        </ul>
+        <span class="v" style="display:block; margin-top:8px; font-size:12.5px; color:var(--ink-faint); font-weight:400;">回数無制限・最短当日反映</span>
+      </div>
+      <div class="service-item"><span class="k">MEO</span><span class="v">Googleビジネスプロフィールの整備（写真・営業時間・投稿）</span></div>
+      <div class="service-item"><span class="k">基礎品質</span><span class="v">表示速度・スマホ対応・SSLなど信頼性の底上げ</span></div>
+      <div class="service-item"><span class="k">レポート</span><span class="v">月次で数字を確認しながら改善提案</span></div>
+      <div class="service-item">
+        <span class="k">分析・改善</span>
+        <ul class="v-list">
+          <li>検索結果の順位・流入状況の分析</li>
+          <li>サイト構成・導線の設計見直し</li>
+          <li>デザインの改修</li>
+        </ul>
+      </div>
+      <div class="service-item"><span class="k">計測・提案</span><span class="v">アクセスを計測・分析し、改善案をご提案</span></div>
+    </div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">06 — お客様の声</span>
+      <h2>ご利用中の方から届いた声</h2>
+    </div>
+    <div class="voice-viewport" id="voiceViewport">
+      <div class="voice-slide is-active">
+        <div class="voice-rule"></div>
+        <div class="voice-body">
+          <p class="voice-text">利用を始めてすぐ、たくさんの会社から連絡が来るようになりました。</p>
+          <div class="voice-attr">ご利用中の企業様より（ご利用開始1ヶ月）</div>
+        </div>
+      </div>
+      <div class="voice-slide">
+        <div class="voice-rule"></div>
+        <div class="voice-body">
+          <p class="voice-text">毎月のイベント告知をサイトだけで行うようになってから、体感で来客数が1.5倍ほど増えました。</p>
+          <div class="voice-attr">ご利用中の飲食店様より</div>
+        </div>
+      </div>
+      <div class="voice-slide">
+        <div class="voice-rule"></div>
+        <div class="voice-body">
+          <p class="voice-text">利用を始めて2ヶ月目、情報やブログが止まっていたサイトの内容を見直し、改善を行なっていただき、検索上位も上がり、なんといっても問い合わせが増えてきました。</p>
+          <div class="voice-attr">ご利用中の企業様より（ご利用開始2ヶ月）</div>
+        </div>
+      </div>
+    </div>
+    <div class="voice-progress" id="voiceProgress"><span></span></div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">07 — 料金</span>
+      <h2>正規料金からの、今だけの値引き</h2>
+    </div>
+    <div class="price-headline">
+      <div class="price-headline-reg">正規料金 <span class="strike">¥70,000</span> /月</div>
+      <div class="price-headline-now">
+        <span class="price-headline-num" data-count-to="39800" data-count-prefix="¥">¥0</span>
+        <span class="price-headline-unit">/月</span>
+      </div>
+    </div>
+    <div class="price-card">
+      <p class="curve-heading">6ヶ月間の料金推移</p>
+      <figure class="price-figure" id="priceFigure">
+        <svg viewBox="0 0 900 300" role="img" aria-label="成果イメージが右肩上がりに積み上がっていく曲線と、その下に3段階の料金（39,800円、55,000円、70,000円）が階段状に配置された図。料金は常に成果イメージの下にある">
+          <defs>
+            <linearGradient id="curveFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--navy)" stop-opacity="0.24"/>
+              <stop offset="100%" stop-color="var(--navy)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <path class="curve-area" d="M 60 230 C 260 225, 360 190, 480 150 C 620 105, 740 70, 850 45 L 850 260 L 60 260 Z" fill="url(#curveFill)"></path>
+          <path class="curve-line" d="M 60 230 C 260 225, 360 190, 480 150 C 620 105, 740 70, 850 45" fill="none" stroke="var(--navy)" stroke-width="2.5"></path>
+          <text x="65" y="215" class="curve-label">積み上がっていく成果イメージ</text>
+
+          <!-- phase 1 -->
+          <rect class="phase-rect" x="60" y="234" width="260" height="26" fill="var(--paper-sunken)" stroke="var(--line-strong)"></rect>
+          <text x="190" y="251" text-anchor="middle" class="phase-tag phase-fade phase-fade-1">1〜3ヶ月目</text>
+          <text x="190" y="284" text-anchor="middle" class="price-now phase-fade phase-fade-1" data-count-to="39800" data-count-prefix="¥">¥0</text>
+          <text x="190" y="297" text-anchor="middle" class="price-off phase-fade phase-fade-1">¥30,200 OFF</text>
+
+          <!-- phase 2 -->
+          <rect class="phase-rect" x="320" y="234" width="260" height="26" fill="var(--paper-sunken)" stroke="var(--line-strong)"></rect>
+          <text x="450" y="251" text-anchor="middle" class="phase-tag phase-fade phase-fade-2">4〜6ヶ月目</text>
+          <text x="450" y="284" text-anchor="middle" class="price-now phase-fade phase-fade-2" data-count-to="55000" data-count-prefix="¥">¥0</text>
+          <text x="450" y="297" text-anchor="middle" class="price-off phase-fade phase-fade-2">¥15,000 OFF</text>
+
+          <!-- phase 3 -->
+          <rect class="phase-rect" x="580" y="234" width="260" height="26" fill="var(--paper-sunken)" stroke="var(--line-strong)"></rect>
+          <text x="710" y="251" text-anchor="middle" class="phase-tag phase-fade phase-fade-3">7ヶ月目〜</text>
+          <text x="710" y="284" text-anchor="middle" class="price-now is-reg phase-fade phase-fade-3" data-count-to="70000" data-count-prefix="¥">¥0</text>
+          <text x="710" y="297" text-anchor="middle" class="price-reg phase-fade phase-fade-3">正規料金</text>
+        </svg>
+      </figure>
+      <figcaption>更新のたびにご案内しながら、7ヶ月目で正規料金に切り替わります。</figcaption>
+
+      <div class="price-reason">
+        <strong>なぜ値引きするのか。</strong>運用を始めてからの立ち上げ期は、改善しても数字が動きにくい時期です。その負担分を、モニター価格として当方が引き受けています。
+      </div>
+      <div class="price-reason">
+        <strong>料金の切り替えについて。</strong>3ヶ月ごとの契約更新のタイミングで、次の料金帯への移行を事前にご案内します。自動で値上がりするのではなく、その都度「継続いただけるか」をご確認したうえで進めます。
+      </div>
+    </div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">08 — 進め方</span>
+      <h2>3つのフェーズで進めます</h2>
+    </div>
+    <div class="timeline" id="timeline">
+      <div class="timeline-rail"><div class="timeline-rail-fill" id="timelineFill"></div></div>
+      <div class="timeline-item">
+        <span class="timeline-badge">PHASE 1・土台をつくる</span>
+        <h3>1〜3ヶ月目</h3>
+        <ul>
+          <li>現状のサイト診断と改善計画のご提示</li>
+          <li>更新・修正の無制限対応をスタート</li>
+          <li>Googleビジネスプロフィールの整備</li>
+          <li>表示速度・スマホ対応・SSLなど、基礎の底上げ</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-badge">PHASE 2・回し始める</span>
+        <h3>4〜6ヶ月目</h3>
+        <ul>
+          <li>月次レポートの数字を見ながら微調整</li>
+          <li>電話・フォームなど、問い合わせ導線の改善</li>
+          <li>実績・お客様の声など、信頼できる材料の追加</li>
+        </ul>
+      </div>
+      <div class="timeline-item is-final">
+        <span class="timeline-badge">PHASE 3・積み上げていく</span>
+        <h3>7ヶ月目〜</h3>
+        <ul>
+          <li>継続的な情報更新・改善サイクルに入る</li>
+          <li>6ヶ月分のデータをもとに、次の一手をご相談</li>
+          <li>それまで積み上げてきた運用実績を活かし、貴社の目的により合わせた運用に切り替えていく</li>
+          <li>ここから先は、正規料金でのご契約に切り替わります</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="js-reveal">
+    <div class="section-head">
+      <span class="section-num">09 — よくあるご質問</span>
+      <h2>契約前に気になること</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">
+          <span class="mark">Q</span><span class="q-text">モニター価格の対象に条件はありますか？</span><span class="chevron"></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">今回ご案内している方が対象です。人数に限りがあるため、状況によってはご案内できない場合があります。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">
+          <span class="mark">Q</span><span class="q-text">値引き後、急に料金が上がるのでは？</span><span class="chevron"></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">自動で値上がりすることはありません。3ヶ月ごとの更新タイミングで、次の料金帯への移行を事前にご案内し、継続いただけるかをその都度ご確認したうえで進めます。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">
+          <span class="mark">Q</span><span class="q-text">途中で解約できますか？</span><span class="chevron"></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">3ヶ月目以降は、いつでも違約金なしで解約いただけます。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false">
+          <span class="mark">Q</span><span class="q-text">お願いしたいことはありますか？</span><span class="chevron"></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">モニター価格でのご提供にあたり、導入事例やお客様の声としてご協力いただけるとありがたいです。</div></div>
+      </div>
+    </div>
+    <p class="fine-note">※ 記載の効果・期間はあくまで目安です。業種・地域・競合状況により変動し、成果をお約束するものではありません。</p>
+  </section>
+
+  <div class="cta-section">
+    <div class="cta-card">
+      <h2>まずは無料相談・無料サイト診断から</h2>
+      <p>今のサイトを見せていただければ、改善点と進め方をその場でお伝えします。ご相談だけでも歓迎です。</p>
+      <a class="cta-btn" href="https://lin.ee/VNnLIPN" target="_blank" rel="noopener">LINEで相談する</a>
+    </div>
+  </div>
+
+  <footer class="foot">
+    &copy;2026 原龍我
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.faq-item');
+  items.forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    var answer = item.querySelector('.faq-a');
+    btn.addEventListener('click', function(){
+      var isOpen = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen){
+        answer.style.height = answer.scrollHeight + 'px';
+      } else {
+        answer.style.height = '0';
+      }
+    });
+  });
+  window.addEventListener('resize', function(){
+    items.forEach(function(item){
+      if (item.classList.contains('is-open')){
+        var answer = item.querySelector('.faq-a');
+        answer.style.height = answer.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+
+(function(){
+  var headline = document.getElementById('heroHeadline');
+  if (!headline) return;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var lines = headline.innerHTML.split('<br>');
+  headline.innerHTML = '';
+  var charIndex = 0;
+  lines.forEach(function(line, li){
+    line.split('').forEach(function(ch){
+      var span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch;
+      span.style.transitionDelay = (charIndex * 0.04) + 's';
+      headline.appendChild(span);
+      charIndex++;
+    });
+    if (li < lines.length - 1) headline.appendChild(document.createElement('br'));
+  });
+
+  function revealChars(){
+    headline.querySelectorAll('.char').forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  var badge = document.getElementById('heroBadge');
+  var bgSvg = document.getElementById('heroBgSvg');
+
+  // firing order: background curve draws -> headline flows in -> badge fades in
+  if (reduceMotion){
+    if (bgSvg) bgSvg.querySelectorAll('.curve, .fill, .dot').forEach(function(el){ el.classList.add('play'); });
+    revealChars();
+    if (badge) badge.classList.add('is-in');
+  } else {
+    var CURVE_DELAY = 1000; // ms, wait after page display before the background starts drawing
+    var CURVE_DUR = 3200; // ms, matches the .curve draw-in animation duration
+    var HEADLINE_START = CURVE_DELAY + CURVE_DUR * 0.55; // headline starts once the curve is more than half drawn
+    var typeDuration = charIndex * 0.04 + 0.5; // seconds, matches the char reveal stagger + transition
+    var BADGE_START = HEADLINE_START + typeDuration * 1000 + 350;
+
+    if (bgSvg) setTimeout(function(){
+      bgSvg.querySelectorAll('.curve, .fill, .dot').forEach(function(el){ el.classList.add('play'); });
+    }, CURVE_DELAY);
+    setTimeout(revealChars, HEADLINE_START);
+    if (badge) setTimeout(function(){ badge.classList.add('is-in'); }, BADGE_START);
+  }
+
+  var pinWrap = document.querySelector('.hero-pin-wrap');
+  var numEl = document.getElementById('heroNum');
+  var statDesc = document.getElementById('heroStatDesc');
+  var odometer = document.getElementById('heroOdometer');
+
+  if (pinWrap && numEl && statDesc){
+    if (reduceMotion){
+      numEl.classList.add('is-in');
+      statDesc.classList.add('is-in');
+      if (odometer) odometer.querySelectorAll('.track').forEach(function(t){ t.classList.add('play'); });
+    } else {
+      var stageState = [false, false];
+      function setStage(idx, on){
+        if (stageState[idx] === on) return;
+        stageState[idx] = on;
+        if (idx === 0){
+          numEl.classList.toggle('is-in', on);
+          if (on && odometer){
+            odometer.querySelectorAll('.track').forEach(function(t){
+              t.classList.remove('play');
+              void t.offsetWidth;
+              t.classList.add('play');
+            });
+          }
+        }
+        if (idx === 1) statDesc.classList.toggle('is-in', on);
+      }
+      function onHeroScroll(){
+        var rect = pinWrap.getBoundingClientRect();
+        var total = rect.height - window.innerHeight;
+        var scrolled = -rect.top;
+        var progress = total > 0 ? Math.min(Math.max(scrolled / total, 0), 1) : 1;
+        setStage(0, progress > 0.15);
+        setStage(1, progress > 0.30);
+      }
+      var heroTicking = false;
+      window.addEventListener('scroll', function(){
+        if (!heroTicking){
+          requestAnimationFrame(function(){ onHeroScroll(); heroTicking = false; });
+          heroTicking = true;
+        }
+      }, { passive: true });
+      onHeroScroll();
+    }
+  }
+
+  // Safety net: some browsers keep compositing the sticky hero's background
+  // svg above later sections even after it's scrolled past (a known sticky-
+  // element rendering quirk). Force-hide it via JS once we're clearly past
+  // the hero, regardless of any CSS stacking/isolation behavior.
+  if (pinWrap && bgSvg){
+    function syncBgSvgVisibility(){
+      var rect = pinWrap.getBoundingClientRect();
+      var pastHero = rect.bottom <= window.innerHeight;
+      bgSvg.style.visibility = pastHero ? 'hidden' : '';
+    }
+    var bgSvgTicking = false;
+    window.addEventListener('scroll', function(){
+      if (!bgSvgTicking){
+        requestAnimationFrame(function(){ syncBgSvgVisibility(); bgSvgTicking = false; });
+        bgSvgTicking = true;
+      }
+    }, { passive: true });
+    syncBgSvgVisibility();
+  }
+})();
+
+(function(){
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealEls = document.querySelectorAll('.js-reveal, .js-stagger');
+  if (reduceMotion || !('IntersectionObserver' in window)){
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  }
+})();
+
+(function(){
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function animateCount(el, duration){
+    var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+    var prefix = el.getAttribute('data-count-prefix') || '';
+    function setValue(v){ el.textContent = prefix + v.toLocaleString('ja-JP'); }
+    if (reduceMotion || !('IntersectionObserver' in window)){ setValue(target); return; }
+    var done = false;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting && !done){
+          done = true;
+          io.unobserve(entry.target);
+          var start = null;
+          function step(ts){
+            if (start === null) start = ts;
+            var p = Math.min((ts - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            setValue(Math.round(target * eased));
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(el);
+  }
+  var priceNum = document.querySelector('.price-headline-num');
+  if (priceNum) animateCount(priceNum, 1600);
+  var statNum = document.querySelector('#statNum');
+  if (statNum) animateCount(statNum, 1400);
+})();
+
+(function(){
+  var wrap = document.querySelector('#voiceViewport');
+  if (!wrap) return;
+  var slides = Array.from(wrap.querySelectorAll('.voice-slide'));
+  var progressBar = document.querySelector('#voiceProgress span');
+  var INTERVAL = 12000;
+  var index = 0;
+  var start = performance.now();
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function syncHeight(){
+    wrap.style.height = slides[index].offsetHeight + 'px';
+  }
+
+  function show(i){
+    slides[index].classList.remove('is-active');
+    index = (i + slides.length) % slides.length;
+    slides[index].classList.add('is-active');
+    start = performance.now();
+    syncHeight();
+  }
+
+  syncHeight();
+  window.addEventListener('resize', syncHeight);
+
+  var timer = null;
+  function restartTimer(){
+    if (timer) clearInterval(timer);
+    if (slides.length > 1 && !reduceMotion){
+      timer = setInterval(function(){ show(index + 1); }, INTERVAL);
+    }
+  }
+  restartTimer();
+
+  // 手動スワイプ操作
+  var startX = null;
+  wrap.addEventListener('pointerdown', function(e){ startX = e.clientX; });
+  wrap.addEventListener('pointerup', function(e){
+    if (startX === null) return;
+    var diff = e.clientX - startX;
+    startX = null;
+    if (Math.abs(diff) < 40) return;
+    if (diff < 0) { show(index + 1); } else { show(index - 1); }
+    restartTimer();
+  });
+
+  if (progressBar && !reduceMotion){
+    var tick = function(now){
+      var elapsed = (now - start) % INTERVAL;
+      progressBar.style.width = ((elapsed / INTERVAL) * 100) + '%';
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+})();
+
+(function(){
+  var figure = document.querySelector('#priceFigure');
+  if (!figure) return;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nums = Array.from(figure.querySelectorAll('.price-now[data-count-to]'));
+  var delays = { 'phase-fade-1': 550, 'phase-fade-2': 1000, 'phase-fade-3': 1450 };
+
+  function countUp(el, delay){
+    var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+    var prefix = el.getAttribute('data-count-prefix') || '';
+    setTimeout(function(){
+      var start = null;
+      var duration = 1000;
+      function step(ts){
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.round(target * eased).toLocaleString('ja-JP');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, delay);
+  }
+
+  function trigger(){
+    figure.classList.add('is-drawn');
+    if (reduceMotion){
+      nums.forEach(function(el){
+        el.textContent = (el.getAttribute('data-count-prefix') || '') + parseInt(el.getAttribute('data-count-to'), 10).toLocaleString('ja-JP');
+      });
+      return;
+    }
+    nums.forEach(function(el){
+      var phaseClass = Array.from(el.classList).find(function(c){ return delays[c] !== undefined; });
+      countUp(el, delays[phaseClass] || 0);
+    });
+  }
+
+  if (!('IntersectionObserver' in window)){ trigger(); }
+  else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ trigger(); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(figure);
+  }
+})();
+
+(function(){
+  var heads = Array.from(document.querySelectorAll('.section-head'));
+  if (!heads.length) return;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function splitChars(h2){
+    var text = h2.textContent;
+    h2.textContent = '';
+    text.split('').forEach(function(ch, i){
+      var span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch;
+      span.style.transitionDelay = (i * 0.04) + 's';
+      h2.appendChild(span);
+    });
+  }
+
+  function revealChars(h2){
+    h2.querySelectorAll('.char').forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  heads.forEach(function(head){
+    var h2 = head.querySelector('h2');
+    if (h2) splitChars(h2);
+  });
+
+  if (reduceMotion || !('IntersectionObserver' in window)){
+    heads.forEach(function(head){
+      var h2 = head.querySelector('h2');
+      if (h2) revealChars(h2);
+    });
+    return;
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        var h2 = entry.target.querySelector('h2');
+        if (h2) setTimeout(function(){ revealChars(h2); }, 450);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  heads.forEach(function(head){ io.observe(head); });
+})();
+
+(function(){
+  var rows = Array.from(document.querySelectorAll('.benefit-row'));
+  if (!rows.length) return;
+  var mq = window.matchMedia('(max-width:640px)');
+  var ticking = false;
+  var highRatio = 0.5;
+
+  function clearAll(){
+    rows.forEach(function(row){
+      row.classList.remove('is-after-active');
+    });
+  }
+
+  function update(){
+    ticking = false;
+    if (!mq.matches){ clearAll(); return; }
+    var highY = window.innerHeight * highRatio;
+    rows.forEach(function(row){
+      var rect = row.getBoundingClientRect();
+      var centerY = rect.top + rect.height / 2;
+      var afterActive = centerY <= highY;
+      row.classList.toggle('is-after-active', afterActive);
+    });
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', function(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  });
+  update();
+})();
+
+(function(){
+  var timeline = document.querySelector('#timeline');
+  var fill = document.querySelector('#timelineFill');
+  if (!timeline || !fill) return;
+  var items = Array.from(timeline.querySelectorAll('.timeline-item'));
+  var ticking = false;
+  var triggerRatio = 0.6;
+
+  function update(){
+    ticking = false;
+    var rect = timeline.getBoundingClientRect();
+    var triggerY = window.innerHeight * triggerRatio;
+    var progress = (triggerY - rect.top) / rect.height;
+    progress = Math.max(0, Math.min(1, progress));
+    fill.style.height = (progress * 100) + '%';
+
+    items.forEach(function(item){
+      var itemRect = item.getBoundingClientRect();
+      var dotY = itemRect.top + 4;
+      item.classList.toggle('is-active', dotY < triggerY);
+    });
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', function(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  });
+  update();
+})();
+</script>
+
+</body>
+</html>
