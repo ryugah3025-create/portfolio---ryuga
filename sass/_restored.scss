@@ -1,0 +1,230 @@
+// 【復元】以前 css/style.css にだけ存在し、SCSSには書かれていなかったスタイル。
+// SCSSから css/style.css を再コンパイルした際に消えてしまい、モーダルが開かなくなる等の不具合が出たため、
+// コミット済みの css/style.css(HEAD) から該当ブロックだけを取り出してここに戻している。
+// 対象: モーダル / 追従バナー / 下層WORKSのカード / ヘッダーのnav補足 / トップの「【10社様限定】」など
+#back-bn.in {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.scrooll.none {
+    opacity: 0;
+    z-index: -9999;
+    transition: all 1s;
+}
+
+
+
+main .subscription-content {
+    margin: 80px 0 160px;
+}
+
+main .subscription-content h2 {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 767px) {
+    main .subscription-content h2 {
+        font-size: 30px;
+    }
+}
+
+main .subscription-content h2 span {
+    position: relative;
+    top: 36px;
+    transition: all 0.3s;
+}
+
+main .subscription-content h2 span.in {
+    top: 0;
+}
+
+@media screen and (max-width: 767px) {
+    main .subscription-content .subscription-detail {
+        max-width: 508px;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+main .subscription-content .subscription-detail .redーbold {
+    display: block;
+    font-size: 32px;
+    line-height: 2;
+}
+
+@media screen and (max-width: 767px) {
+    main .subscription-content .subscription-detail .redーbold {
+        text-align: center;
+        font-size: 24px;
+    }
+}
+
+main .subscription-content p {
+    text-align: center;
+    line-height: 2;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    main .subscription-content p {
+        text-align: left;
+        font-size: 16px;
+    }
+}
+
+main .subscription-content p + p {
+    margin-top: 24px;
+}
+
+.work .work-list .work-item .text-area h3 a {
+    display: block;
+    color: #000;
+}
+
+.work .work-list .work-item .text-area h3 a::after {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 22px;
+    margin-left: 8px;
+    background-image: url(../images/modal_1.svg);
+    background-repeat: no-repeat;
+    vertical-align: text-bottom;
+}
+
+@media screen and (max-width: 767px) {
+    .work .work-list .work-item .text-area h3 a::after {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.work .work-list .js-work-item {
+    opacity: 0;
+    transform: translate(0, 100px);
+    -webkit-transform: translate(0, 100px);
+    transition: all 1s;
+}
+
+.work .work-list .js-work-item.view {
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    opacity: 1;
+}
+
+.modal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    visibility: hidden;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    transform: scale(0);
+    transition: all 1s;
+}
+
+.modal.is-active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 9999;
+    transform: scale(1);
+}
+
+.modal.is-active .modal-content {
+    transform: rotateX(360deg);
+}
+
+.modal .modal-content {
+    max-width: 1008px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 16px;
+    border: 1px solid #000000;
+    transition: all 1s;
+    background-color: #fff;
+}
+
+.modal .modal-content .modal-close {
+    display: block;
+    margin-bottom: 16px;
+    text-align: right;
+}
+
+.modal .modal-content .modal-close a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 24px;
+}
+
+.modal .modal-content .modal-img img {
+    width: 100%;
+}
+
+.modal .modal-content .modal-text-area {
+    margin-top: 40px;
+}
+
+.modal .modal-content .modal-text-area h1 {
+    font-size: 32px;
+}
+
+@media screen and (max-width: 767px) {
+    .modal .modal-content .modal-text-area h1 {
+        font-size: 28px;
+    }
+}
+
+.modal .modal-content .modal-text-area dl {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 16px;
+    row-gap: 24px;
+}
+
+@media screen and (max-width: 767px) {
+    .modal .modal-content .modal-text-area dl {
+        font-size: 14px;
+    }
+}
+
+.modal .modal-content .modal-text-area dl dt {
+    width: 160px;
+    overflow-wrap: anywhere;
+}
+
+@media screen and (max-width: 767px) {
+    .modal .modal-content .modal-text-area dl dt {
+        width: 100%;
+        font-weight: bold;
+    }
+}
+
+.modal .modal-content .modal-text-area dl dd {
+    width: calc(100% - 160px);
+    overflow-wrap: anywhere;
+}
+
+.modal .modal-content .modal-text-area dl dd p + p {
+    margin-top: 1em;
+}
+
+.modal .modal-content .modal-text-area .modal-note {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+    .modal .modal-content .modal-text-area dl dd {
+        width: 100%;
+        margin-top: -16px;
+    }
+}

@@ -1,14 +1,8 @@
-// ハンバーガーメニュー
-const hamburger = document.querySelector(".hamburger");
-const hMenu = document.querySelector(".h-menu");
-hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("hamburger-none");
-    hMenu.classList.toggle("menuIn");
-});
+// ヘッダーのメニュー(おしながき)の開閉は header-menu.js
 
 // 画面トップに戻るボタンの実装
 const backBn = document.querySelector("#back-bn");
-window.addEventListener("scroll", () => {
+if (backBn) window.addEventListener("scroll", () => {
     if (window.scrollY > 500) {
         backBn.classList.add("in");
         backBn.addEventListener("click", () => {

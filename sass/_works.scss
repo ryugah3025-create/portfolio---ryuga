@@ -1,0 +1,242 @@
+@use "responsive" as *;
+
+// WORKSページ ファーストビュー（Figma「worksファーストビュー1〜3」）
+// 1) 中央に「WORKS」。時計回りに、四隅から顔が順に覗き込んでくる
+// 2) スクロールすると「WORKS」の「O」へズームしていき、「O」の真ん中を潜り抜ける
+// 3) 潜り抜けた先に、実績リストが現れる → 通常のスクロール
+.works-fv {
+    position: relative;
+    // 舞台(.works-stage)は、下の実績リストの上に重ねて置く。高さは0にして、
+    // 「O」を潜り抜けて舞台が消えると、その場に実績リストが現れるようにする
+    height: 0;
+
+    // 1画面ぶんの舞台（白背景）。潜り抜けたあとは消えて、下の案内文が見える
+    .works-stage {
+        position: fixed;
+        top: 0;
+        left: 0;
+        // 下の実績リスト(カードは z-index:20 まで、「トップに戻る」は60)よりも手前に置き、FVの間は見えないようにする
+        z-index: 100;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        background: #fff;
+
+        // スマホは、実際に見えている高さぴったりにする（上に余白ができたり、中央がずれたりしない）
+        @supports (height: 100dvh) {
+            height: 100dvh;
+        }
+    }
+
+    // 中央の「WORKS」。位置合わせ(中央寄せ)はJSのxPercent/yPercentで行う
+    .works-title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 2;
+        margin: 0;
+        display: flex;
+        font-family: 'Itim', cursive;
+        font-weight: 400;
+        // デザインは240px(幅1600px)。縦に短い画面では高さも上限にする
+        font-size: min(15vw, 26vh);
+        line-height: 1.2;
+        white-space: nowrap;
+        color: #000;
+
+        @include sp {
+            font-size: min(24vw, 14vh);
+        }
+    }
+
+    // サイト全体の `* { font-family: Lato }` を打ち消し、Itimのまま表示する
+    .works-char {
+        display: block;
+        font-family: inherit;
+        font-style: normal;
+    }
+
+    // 四隅から覗き込む顔。位置は顔の中心。回転はJSで付ける
+    .works-face {
+        position: absolute;
+        z-index: 1;
+        --fh: min(62vh, 46vw);
+        height: var(--fh);
+        pointer-events: none;
+
+        @supports (height: 100svh) {
+            --fh: min(62svh, 46vw);
+        }
+
+        @include sp {
+            --fh: min(34vh, 62vw);
+        }
+
+        img {
+            display: block;
+            height: 100%;
+            width: auto;
+            max-width: none;
+        }
+    }
+
+    .works-face--tl {
+        left: 9%;
+        top: 12%;
+    }
+
+    .works-face--tr {
+        left: 91%;
+        top: 11%;
+    }
+
+    .works-face--br {
+        left: 85%;
+        top: 88%;
+    }
+
+    .works-face--bl {
+        left: 11%;
+        top: 87%;
+        // Figmaでは、左下の顔だけ少し大きい（674 / 627 ≒ 1.08倍）
+        height: calc(var(--fh) * 1.08);
+    }
+}
+
+// ---- 実績リスト（Figma「wroksの実績リスト」）----
+// 中央に大きく1件、右上と左下に前後の実績が少しだけのぞく。位置・大きさはJS(works-gallery.js)が
+// スクロールの量に合わせて計算する。ここでは、カード1枚ぶんの見た目だけを決める
+// 実績リスト（無限スライド）。ページの一番最後に置き、ここまで来たらページのスクロールは使わず、
+// 上下左右のホイール・スワイプ・キーで、中央の実績が無限に切り替わる。位置・大きさはJS(works-gallery.js)が計算する
+.works-gallery {
+    position: relative;
+    height: 0;
+    background: #fff;
+
+    // ページはスクロールしないので、実績リストは「いま見えている画面」ぴったりに固定する。
+    // スマホのアドレスバー/ツールバーの出入りでも、上に余白ができたり下が隠れたりしないよう、高さは dvh（実際に見えている高さ）
+    .works-gallery-stage {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        touch-action: none;
+        background: #fff;
+
+        @supports (height: 100dvh) {
+            height: 100dvh;
+        }
+    }
+
+    // 上のほうにある「トップに戻る」（Figma：64px）
+    .works-top {
+        position: absolute;
+        top: 6.5%;
+        left: 50%;
+        z-index: 60;
+        transform: translateX(-50%);
+        font-family: 'Itim', cursive;
+        font-size: clamp(28px, 4vw, 64px);
+        line-height: 1.2;
+        white-space: nowrap;
+        color: #000;
+        text-decoration: none;
+
+        // スマホは、一番左上に小さく置く（リストの場所を取らない）
+        @include sp {
+            top: 12px;
+            left: 14px;
+            transform: none;
+            font-size: 15px;
+            z-index: 60;
+        }
+
+        .link-note {
+            display: block;
+            margin-top: -0.2em;
+            text-align: right;
+        }
+
+        &:hover {
+            opacity: .6;
+        }
+    }
+
+    .works-cards {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    // カードの基準の幅＝中央に来たときの幅。JSが --card-w に代入する（未設定なら67vw）
+    .works-card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--card-w, 67vw);
+        transform-origin: 0 0;
+        will-change: transform, opacity;
+
+        a {
+            display: block;
+            aspect-ratio: 3 / 2;
+            overflow: hidden;
+            border: 1px solid #000;
+            background: #fff;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    // 店名（Itim。デザインは30px＝カード幅1073pxの約2.8%）
+    .works-card-name {
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        margin: 0 0 0.3em;
+        font-family: 'Itim', cursive;
+        font-size: calc(var(--card-w, 67vw) * 0.028);
+        line-height: 1.2;
+        white-space: nowrap;
+        color: #000;
+    }
+}
+
+
+// スクロールで最後まで来たら（＝実績リストのみ）最終フッターは使わない
+html.works-list-page footer.ending {
+    display: none;
+}
+html.works-list-page main.work {
+    margin-bottom: 0;
+}
+
+// 動きを減らす設定：固定・切り替えは行わず、カードを縦に並べて見せる
+.works-gallery.is-static {
+    height: auto;
+
+    .works-gallery-stage {
+        position: relative;
+        height: auto;
+        padding: 80px 0;
+        overflow: visible;
+        touch-action: auto;
+    }
+
+    .works-card {
+        position: relative !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        z-index: auto !important;
+        width: min(90vw, 640px);
+        margin: 64px auto;
+    }
+}

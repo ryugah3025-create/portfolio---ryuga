@@ -1,5 +1,11 @@
 <?php include ( dirname(__FILE__) . '/../wp/wp-load.php'); ?>
 <?php wp_head(); ?>
+<?php
+$pageTitle = 'CONTACT｜お問い合わせ | 原龍我（ハラリュウガ）';
+$pageDescription = 'ホームページ制作・Web制作・Web運用のご相談、お見積りは、原龍我（ハラリュウガ）までお気軽にお問い合わせください。';
+$pagePath = '/contact/';
+$pageCrumb = 'CONTACT';
+?>
 <?php include ( dirname(__FILE__) . '/../template/header.php' ); ?>
 
 	<main class="contact">

@@ -1,0 +1,188 @@
+@use "responsive" as *;
+
+// ABOUTページ ファーストビュー（Figma「aboutFV1〜4」）と、そのあとのストーリー（「aboutセクション4」）
+// 1603 x 1540 のキャンバスに、写真4枚とタイトル。位置・大きさはデザイン上のpxを、キャンバスの幅に対する%(cqw)に変換して配置する。
+// 写真は1枚ずつ急に現れて重なる（JS: about-fv.js）。全部そろったら、下に「ABOUT」が急に現れる。
+$fv-w: 1603;
+$fv-h: 1540;
+
+// 外側(.about-fv)はスクロールの長さ(JSが高さを与える)、内側(.about-fv-pin)は position:sticky で画面に張りつく。
+// ※ 外側に overflow を付けると sticky が効かなくなるので付けない
+.about-fv {
+    position: relative;
+    background: #fff;
+}
+
+.about-fv-pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+    container-type: size;
+    // キャンバスの幅（PC：縦横に収まる大きさ / SP：写真が少しはみ出す大きさ）
+    --wc: min(100cqw, calc(100cqh * #{$fv-w} / #{$fv-h}));
+
+    @supports (height: 100dvh) {
+        height: 100dvh;
+    }
+
+    // 1デザインpx＝何画面pxか（文字サイズ・間隔に使う）
+    --cu: calc(var(--wc) / #{$fv-w});
+
+    @include sp {
+        --wc: min(160cqw, calc(100cqh * #{$fv-w} / #{$fv-h}));
+        // スマホは、44pxの文字が画面幅の約3.6%になる大きさ（いちばん長い行が1行に収まる）
+        --cu: calc(3.6vw / 44);
+    }
+
+    // 最後に流れていく文章（エンディング風）。位置・大きさ・薄さはJSがスクロールに合わせて決める
+    .about-credits {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 300;
+        width: 100%;
+        padding: 0 5vw;
+        box-sizing: border-box;
+        text-align: center;
+        pointer-events: none;
+        visibility: hidden; // JSが動くときだけ表示（動かないときは、下の通常の本文を見せる）
+    }
+
+    .about-credits.is-ready {
+        visibility: visible;
+    }
+
+    .about-credit-group {
+        margin-top: calc(var(--cu) * 90);
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .about-credit-line {
+        margin: 0;
+        font-family: 'Noto Sans JP', sans-serif;
+        font-size: calc(var(--cu) * var(--fs));
+        line-height: 1.75;
+        color: #000;
+        will-change: transform, opacity;
+        overflow-wrap: anywhere;
+        text-wrap: balance;
+    }
+
+    // FVのあとのストーリー：キャラクターと、降ってくる写真（JSが表示・動かす。位置はFigmaのpx→キャンバス%）
+    .about-story-char,
+    .about-story-drop {
+        position: absolute;
+        left: calc(var(--x) / #{$fv-w} * 100%);
+        top: calc(var(--y) / #{$fv-h} * 100%);
+        width: calc(var(--w) / #{$fv-w} * 100%);
+        height: auto;
+        visibility: hidden;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .about-fv-canvas {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        // PC：縦横どちらかが収まる大きさ
+        width: var(--wc);
+        aspect-ratio: #{$fv-w} / #{$fv-h};
+    }
+
+    // 写真：--x/--y/--w はデザイン上のpx
+    .about-fv-photo {
+        position: absolute;
+        left: calc(var(--x) / #{$fv-w} * 100%);
+        top: calc(var(--y) / #{$fv-h} * 100%);
+        width: calc(var(--w) / #{$fv-w} * 100%);
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: zoom-in;
+        // JSが動くまでは、そのまま見えているようにしておく（動く場合はJSが隠して落とす）
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        &:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 4px;
+        }
+
+        // 位置・大きさ・重なり順は、about/index.php の配列から style（--x/--y/--w/z-index）で与える。写真を増やしてもここは触らない
+    }
+
+    // 「ABOUT」：キャンバスの外に置き、SPでキャンバスが画面より広くても、左端が切れないようにする
+    .about-fv-title {
+        position: absolute;
+        // デザイン上の位置(63, 1318)を、キャンバスの幅(--wc)から求める
+        left: calc(50cqw - var(--wc) / 2 + var(--wc) * 63 / #{$fv-w});
+        top: calc(50cqh - var(--wc) * #{$fv-h} / #{$fv-w} / 2 + var(--wc) * 1318 / #{$fv-w});
+        z-index: 1000;
+        margin: 0;
+        font-family: 'Itim', cursive;
+        font-weight: 400;
+        font-size: 8vw;
+        font-size: calc(var(--wc) * 128 / #{$fv-w});
+        line-height: 1.2;
+        color: #000;
+        transform-origin: 0 50%;
+
+        @include sp {
+            left: 16px;
+            // SPは文字を少し大きく
+            font-size: calc(var(--wc) * 170 / #{$fv-w});
+        }
+    }
+}
+
+// 写真の拡大表示
+.about-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw;
+    background: rgba(0, 0, 0, .82);
+    opacity: 0;
+    transition: opacity .3s ease;
+
+    &[hidden] {
+        display: none;
+    }
+
+    &.is-open {
+        opacity: 1;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .about-lightbox-close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        border: 0;
+        background: none;
+        color: #fff;
+        font-size: 44px;
+        line-height: 1;
+        cursor: pointer;
+    }
+}

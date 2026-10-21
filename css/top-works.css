@@ -1,0 +1,537 @@
+/* TOPのWORKSセクション（Figma「top_worksセクション1〜4」）
+   「デザインで課題解決」に続いて、手描きの線が描かれる。
+   スクロールすると薄いグレーの膜がかぶさり、文言が下から順番に表示され、続いて
+   実績カード3枚（左右のボタンでスライド）と「View more」が出てくる。
+   その間は画面を固定する（js/top-works.js） */
+/* 下の余白はなし（次のABOUTセクションとの間に白いすき間ができないように） */
+.top-works {
+  margin: 160px 0 0;
+  padding: 0;
+}
+@media (max-width: 767px) {
+  .top-works {
+    margin: 96px 0 0;
+  }
+}
+
+/* 基本（JS無効・prefers-reduced-motion時のフォールバック）: 固定高さにはせず、
+   ステージ→文言の順に普通に縦へ流れるだけにする。スクロールで画面を固定する演出は、
+   JSがニュートラルに動かせる(.is-stickyが付く)ときだけ行う */
+.top-works-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120px 24px 96px;
+  background: #fff;
+}
+.top-works-stage {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 1020 / 836;
+  margin: 0 auto;
+}
+/* aspect-ratioに未対応の古いブラウザ(Safari 14以前など)向け：内側の余白(幅に対する%)で
+   高さを確保する */
+@supports not (aspect-ratio: 1 / 1) {
+  .top-works-stage::before {
+    content: "";
+    display: block;
+    padding-top: 81.96%; /* 836 / 1020 */
+  }
+}
+
+/* JSが動くときは、position:sticky でピン留めし、画面いっぱい(高さ固定)で
+   「ステージ(線+WORKSの輪)」「文言(スライド)」を縦に並べ、スクロールに合わせて文言を切り替える
+   （fixedはiOSで慣性スクロール中に取り残されるためsticky。sass/_about.scssの.about-scrollと同じ考え方） */
+/* 文言ごとに必ず止めるためのスクロールスナップ（js/top-works.jsが、WORKSの文言部分にいる間だけ
+   htmlにis-works-snapを付ける）。目印(.top-works-snap)は文言の位置ごとにJSが置く */
+html.is-works-snap {
+  scroll-snap-type: y mandatory;
+}
+.top-works.is-sticky {
+  position: relative;
+}
+.top-works-snap {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  pointer-events: none;
+}
+
+.top-works.is-sticky .top-works-pin {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  /* ※ 100svh ではなく 100vh（アドレスバーが引っ込んだときの最大の高さ）を使う */
+  height: 100vh;
+  justify-content: center;
+  overflow: hidden;
+  /* 下に80pxぶん余白を取り、一番下の日本語の文字がブラウザの（出入りする）アドレスバー等と
+     重ならないようにする */
+  padding: 0 24px 80px;
+}
+/* 線・WORKSの輪を置く舞台。残りの高さいっぱいに収まるようにし(height:100%)、
+   横幅は900pxを上限にする。SVG側のpreserveAspectRatio="xMidYMid meet"が、
+   縦横どちらが先に収まっても中央寄せで収めてくれるので、画面の高さに関わらず必ず画面内に収まる */
+.top-works.is-sticky .top-works-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  aspect-ratio: auto;
+  height: 100%;
+}
+@supports not (aspect-ratio: 1 / 1) {
+  .top-works.is-sticky .top-works-stage::before {
+    display: none;
+  }
+}
+
+.top-works-svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* PCは線(SVG)を最大500pxにして、中央に置く。
+   画面の高さが787pxのときの見た目(文字サイズ・SVG・余白のバランス)を基準にして、
+   それより縦に広い画面では、同じ比率で大きくする(1vh = 7.87px)。横幅が狭い画面で
+   大きくなりすぎないよう、横幅(vw)でも上限をつける */
+@media (min-width: 768px) {
+  .top-works-svg {
+    max-width: 500px;
+    max-width: max(500px, min(63.5vh, 45vw));
+    margin: 0 auto;
+  }
+}
+
+/* 一筆書きの線。js/top-works.jsが長さぶんstroke-dasharray/offsetを設定し、描かれていく演出にする。
+   JSがstroke-dashoffsetを設定するのは画面に入ってからなので、それより前
+   （ページ読み込み〜スクロールでここに来るまでの間）は、opacity:0でそもそも見えないようにしておく。
+   こうしないと、スクロールしてここに来るまでの間は未アニメ化の線がそのまま見えてしまい、
+   演出が始まる瞬間に急に消えてから描き直されるように見えてしまう */
+.top-works-path {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+
+/* ---- スクロールすると、線の上にかぶせる薄いグレーの膜（Figma「top_worksセクション2〜4」の
+   #d9d9d9・60%）。文言を目立たせる。不透明度はjs/top-works.jsがスクロール量に合わせて変える ---- */
+.top-works-veil {
+  display: none;
+}
+.top-works.is-sticky .top-works-veil {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(217, 217, 217, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+.top-works.is-sticky .top-works-stage {
+  z-index: 0;
+}
+
+/* ---- 文言（英語キャプション＋日本語見出し）のリスト。ステージの下、左寄せ（Figma通り）。
+   基本（フォールバック）は4つとも普通に縦に並べて全部見せる。
+   JSが.is-stickyを付けたときは、最初の「デザインで課題解決」の高さぶんだけ場所を取り、
+   残りの文言はその下（画面の外）に続けて並べておく。スクロールに合わせてリストごと上へ動かし、
+   下から順番に表示していく（js/top-works.js） ---- */
+.top-works-slides {
+  position: relative;
+  flex: none;
+  width: 100%;
+  max-width: 900px;
+  margin: 32px auto 0;
+  text-align: left;
+}
+.top-works-slide {
+  width: 100%;
+}
+.top-works-slide + .top-works-slide {
+  margin-top: 40px;
+}
+.top-works.is-sticky .top-works-slides {
+  z-index: 2;
+  will-change: transform;
+}
+.top-works.is-sticky .top-works-slide + .top-works-slide {
+  margin-top: 64px;
+  margin-top: clamp(40px, 9vh, 88px);
+}
+/* 2つ目以降の文言は、下から入ってくるときにJSがフェードインさせる */
+.top-works.is-sticky .top-works-slide + .top-works-slide {
+  opacity: 0;
+}
+/* 「デザインで課題解決」は、最初のイントロ(線→WORKS)の前に、日本語→英語の順で
+   少し下からフェードインさせる（js/top-works.js） */
+.top-works.is-sticky #js-top-works-slide-0 .top-works-slide-en,
+.top-works.is-sticky #js-top-works-slide-0 .top-works-slide-ja {
+  opacity: 0;
+  transform: translateY(28px);
+}
+/* 英語キャプション。画面(特に縦の高さ)に収まるよう、Figmaの指定(24px)より小さめにしている */
+.top-works-slide-en {
+  margin: 0 0 0.5em;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  font-size: clamp(11px, 1.1vw, 16px);
+  line-height: 1.5;
+  color: #000;
+}
+/* 日本語見出し。同じくFigmaの指定(34〜48px)より小さめにして、必ず画面内に収まるようにする */
+.top-works-slide-ja {
+  margin: 0;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  font-size: clamp(18px, 2.4vw, 30px);
+  line-height: 1.45;
+  color: #000;
+}
+/* 「デザインで課題解決」(スライド0)以外の日本語見出しは26px固定にする */
+#js-top-works-slide-1 .top-works-slide-ja,
+#js-top-works-slide-2 .top-works-slide-ja,
+#js-top-works-slide-3 .top-works-slide-ja {
+  font-size: 26px;
+}
+
+/* ---- 実績カード（Figma「top_worksセクション4」）。3枚が横並びで、中央が大きく、
+   左右は少し小さく傾いて画面の端からのぞく。左右の透明なボタンでスライドできる。
+   基本（フォールバック）は、ふつうに縦に並べて全部そのまま見せる ---- */
+.top-works-cards {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 32px auto 0;
+}
+.top-works-cards-track {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.top-works-card {
+  display: block;
+  position: relative;
+  text-decoration: none;
+}
+.top-works-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border: 1px solid #000;
+  background: #fff;
+}
+.top-works-card-name {
+  margin: 0.4em 0 0;
+  font-family: 'Itim', cursive;
+  font-size: 16px;
+  color: #000;
+  text-align: right;
+  white-space: nowrap;
+}
+.top-works-cards-btn {
+  display: none;
+}
+
+.top-works.is-sticky .top-works-cards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30%;
+  height: 46%;
+  max-width: none;
+  margin: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.top-works.is-sticky .top-works-cards-track {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+/* 4枚とも中央に重ねて置き、js/top-works.jsが「中央・左・右・隠れている」の位置へ
+   transformで動かす（動きはCSSのtransitionまかせ） */
+.top-works.is-sticky .top-works-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50%;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s ease;
+  will-change: transform, opacity;
+}
+.top-works.is-sticky .top-works-card.is-instant {
+  transition: none;
+}
+.top-works.is-sticky .top-works-card-name {
+  position: absolute;
+  right: 0;
+  top: 100%;
+}
+/* 左右のボタン。矢印は「<」「>」、背景は丸で、背景も矢印も透けるガラスのような見た目。
+   デザインの邪魔にならないよう控えめにする。
+   乗せる/押すと、矢印と枠が濃くなり、矢印が進む方向へ少し動く */
+.top-works.is-sticky .top-works-cards-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  width: 72px;
+  height: 72px;
+  margin-top: -36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+}
+.top-works-cards-btn-icon {
+  display: block;
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.top-works-cards-btn.is-prev .top-works-cards-btn-icon {
+  transform: scaleX(-1);
+}
+.top-works.is-sticky .top-works-cards-btn:active {
+  transform: scale(0.94);
+}
+/* :focus-visibleに未対応の古いブラウザでも:activeの見た目が効くよう、別々に書く
+   （1つのルールにまとめると、未対応のセレクタがあるだけでルールごと無視される） */
+.top-works.is-sticky .top-works-cards-btn:active {
+  color: #000;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8);
+}
+.top-works.is-sticky .top-works-cards-btn:focus-visible {
+  outline: none;
+  color: #000;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8);
+}
+.top-works.is-sticky .top-works-cards-btn.is-next:active .top-works-cards-btn-icon {
+  transform: translateX(3px);
+}
+.top-works.is-sticky .top-works-cards-btn.is-prev:active .top-works-cards-btn-icon {
+  transform: scaleX(-1) translateX(3px);
+}
+@media (hover: hover) {
+  .top-works.is-sticky .top-works-cards-btn:hover {
+    color: #000;
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8);
+  }
+  .top-works.is-sticky .top-works-cards-btn.is-next:hover .top-works-cards-btn-icon {
+    transform: translateX(3px);
+  }
+  .top-works.is-sticky .top-works-cards-btn.is-prev:hover .top-works-cards-btn-icon {
+    transform: scaleX(-1) translateX(3px);
+  }
+}
+.top-works.is-sticky .top-works-cards-btn.is-prev {
+  left: 2%;
+}
+.top-works.is-sticky .top-works-cards-btn.is-next {
+  right: 2%;
+}
+
+/* ---- View more（Figma「top_worksセクション4」。画面右下）。実績カードが出たあとにフェードインする ---- */
+.top-works-cta {
+  margin: 40px auto 0;
+  text-align: center;
+}
+.top-works-cta-btn {
+  position: relative;
+  display: inline-block;
+  padding: 8px 0 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 48px;
+  font-size: clamp(32px, 4vw, 64px);
+  /* 画面の縦が低いときは、高さに合わせて小さくする */
+  font-size: min(clamp(32px, 4vw, 64px), max(24px, 8.2vh));
+  line-height: 1.2;
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.top-works-cta-btn::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: #000;
+  border-radius: 50%;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.top-works-cta-btn:hover::after {
+  transform: scaleX(1);
+}
+/* 右の位置は、ABOUTセクションの「もっと知る」ボタンと揃うよう、js/top-works.jsが合わせる
+   （下のrightは、JSが動かないときの初期値） */
+.top-works.is-sticky .top-works-cta {
+  position: absolute;
+  right: 120px;
+  right: max(6%, 120px);
+  /* 下(次のABOUTセクションとの間)は120px空ける。縦が低い画面では、カードが小さくなりすぎない
+     よう、画面の高さの15%までにする */
+  bottom: 120px;
+  bottom: min(120px, 15vh);
+  margin: 0;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+@media (min-width: 768px) {
+  .top-works.is-sticky .top-works-pin {
+    padding-bottom: max(80px, 10.2vh);
+  }
+  /* 文言の幅も、文字サイズと同じく787pxを基準に画面の高さに合わせて広げ、
+     PCでは自動で改行させない（改行したい箇所はHTML側の<br>で指定してある）。
+     文字サイズは横幅(vw)でも上限をつけてあるので、改行しなくても画面からははみ出さない */
+  .top-works-slides {
+    max-width: max(900px, min(114.4vh, 90vw));
+    margin-top: max(32px, 4.07vh);
+  }
+  .top-works-slide-en,
+  .top-works-slide-ja {
+    white-space: nowrap;
+  }
+  .top-works.is-sticky .top-works-slide + .top-works-slide {
+    margin-top: 70px;
+    margin-top: max(40px, 9vh);
+  }
+  .top-works-slide-en {
+    font-size: max(clamp(11px, 1.1vw, 16px), min(2.03vh, 1.4vw));
+  }
+  .top-works-slide-ja {
+    font-size: max(clamp(18px, 2.4vw, 30px), min(3.81vh, 3vw));
+  }
+  #js-top-works-slide-1 .top-works-slide-ja,
+  #js-top-works-slide-2 .top-works-slide-ja,
+  #js-top-works-slide-3 .top-works-slide-ja {
+    font-size: max(26px, min(3.3vh, 2.8vw));
+  }
+  .top-works-card-name {
+    font-size: max(16px, min(2.03vh, 1.4vw));
+  }
+}
+
+@media (max-width: 767px) {
+  .top-works-pin {
+    padding: 80px 16px 64px;
+  }
+  .top-works.is-sticky .top-works-pin {
+    padding: 0 16px 80px;
+  }
+  /* スマホは画面が縦長なぶん、ステージをheight:100%で引き伸ばすと、SVG自体は
+     preserveAspectRatio="xMidYMid meet"で中央に収まるだけなので、SVGの実際の絵と
+     文言の間に大きな空白ができてしまっていた。ステージの高さを中身(アスペクト比)なりにして、
+     ステージ+文言のかたまりごと縦中央に寄せることで、SVGと文言を近づける */
+  .top-works.is-sticky .top-works-stage {
+    flex: none;
+    width: 100%;
+    aspect-ratio: 1020 / 836;
+    height: auto;
+    margin-bottom: 12px;
+  }
+  @supports not (aspect-ratio: 1 / 1) {
+    .top-works.is-sticky .top-works-stage::before {
+      display: block;
+    }
+  }
+  .top-works.is-sticky .top-works-slide + .top-works-slide {
+    margin-top: 48px;
+  }
+  /* スマホは日本語16px・英語12px固定にする（デザインで課題解決のスライド0も含む） */
+  .top-works-slide-en {
+    font-size: 12px;
+  }
+  .top-works-slide-ja,
+  #js-top-works-slide-1 .top-works-slide-ja,
+  #js-top-works-slide-2 .top-works-slide-ja,
+  #js-top-works-slide-3 .top-works-slide-ja {
+    font-size: 16px;
+    /* 幅の狭いスマホ(〜390px)では、1行(最長22文字)が収まるよう少しだけ小さくする */
+    font-size: min(16px, 4.1vw);
+  }
+  .top-works.is-sticky .top-works-cards {
+    top: 30%;
+    height: 40%;
+  }
+  .top-works-card-name {
+    font-size: 13px;
+  }
+  .top-works.is-sticky .top-works-cards-btn {
+    width: 56px;
+    height: 56px;
+    margin-top: -28px;
+  }
+  .top-works-cards-btn-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .top-works.is-sticky .top-works-cards-btn.is-prev {
+    left: 6px;
+  }
+  .top-works.is-sticky .top-works-cards-btn.is-next {
+    right: 6px;
+  }
+  .top-works-cta-btn {
+    font-size: 24px;
+  }
+  /* スマホは、画面の下(次のABOUTセクションとの間)を60px空ける。カードはそのすぐ上に
+     js/top-works.jsが置く。右の位置は、ABOUTセクションの「もっと知る」ボタンと揃うよう、JSが合わせる */
+  .top-works.is-sticky .top-works-cta {
+    right: 64px;
+    bottom: 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-works-path,
+  .top-works-slide,
+  .top-works-card {
+    transition: none !important;
+  }
+}

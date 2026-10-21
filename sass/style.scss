@@ -2,91 +2,30 @@
 @use "common" as *;
 @use "footer" as *;
 @use "header" as *;
+@use "loader" as *;
+@use "mainvisual" as *;
+@use "about" as *;
+@use "service" as *;
+@use "restored" as *;
+@use "ending" as *;
+@use "works" as *;
+@use "aboutfv" as *;
+@use "fallback" as *;
+
+// スクロール演出やカードの回転・オフセットアニメーションなどで、
+// 一時的に画面幅を超える要素が出ても横スクロールが発生しないようにする
+// 横スクロールを出さない。bodyは hidden にすると自身がスクロール容器になり、position:sticky が効かなくなるため clip にする
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: clip;
+}
 
 img {
     max-width: 100%;
     height: auto;
-}
-
-
-
-.first-view {
-    display: flex;
-    align-items: center;
-    position: fixed;
-    z-index: 9999;
-    width: 100%;
-    height: 100%;
-
-    &.is-active {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .first-animation {
-
-        &.is-active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-    }
-
-    .left {
-        display: block;
-        width: 50%;
-        height: 100%;
-        position: relative;
-        background-color: #fff;
-        animation: left .5s forwards;
-        animation-delay: 1.4S;
-
-        img {
-            display: block;
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
-    }
-
-    .right {
-        display: block;
-        width: 50%;
-        height: 100%;
-        position: relative;
-        background-color: #fff;
-        animation: right .5s forwards;
-        animation-delay: 1.4S;
-
-        img {
-            display: block;
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-        }
-    }
-}
-
-@keyframes left {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-@keyframes right {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(100%);
-    }
 }
 
 * {
@@ -115,72 +54,180 @@ main {
         margin-bottom: 48px;
     }
 
+    // WORKS（TOPページのプレビュー欄）。写真を無造作に散らかしたようなコラージュ風レイアウト。
+    // .item-workはnth-childで6パターンを繰り返すだけなので、liを増減させても
+    // 手作業でスタイルを追加せず自動的に不規則な配置になる
     .work-content {
+        position: relative;
+        padding-top: 120px;
+        margin-bottom: 120px;
 
         h2 {
-            margin-bottom: 40px;
-            text-align: center;
-            font-size: 40px;
-            font-weight: bold;
+            margin-bottom: 24px;
+            text-align: left;
+            overflow: visible;
+
+            span {
+                display: inline-block;
+                font-family: 'Itim', cursive;
+                font-weight: 400;
+                font-size: clamp(48px, 10vw, 128px);
+                line-height: 1;
+                color: #222;
+                opacity: 0;
+                transform: scale(.3) rotate(-6deg);
+                transform-origin: center center;
+            }
         }
 
-        p {
-            text-align: center;
+        .work-detail {
+            max-width: 640px;
+            margin: 0;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(24px);
 
             @include sp {
+                max-width: 508px;
+                width: 100%;
+                margin: 0 auto;
                 text-align: left;
             }
+        }
 
-            &+p {
-                margin-top: 24px;
-            }
+        p+p {
+            margin-top: 24px;
         }
 
         .list-work {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             flex-wrap: wrap;
-            margin-top: 32px;
-            gap: 32px 8px;
+            margin-top: 64px;
+            // 縦の間隔は、カードごとのtranslateY差(最大約80px)と回転ではみ出す分を見込み、
+            // 上下のカードが重ならないように広めにとる
+            gap: 120px 40px;
             list-style: none;
 
-            .item-work {
-                width: 30%;
+            @include sp {
+                margin-top: 40px;
+                gap: 32px;
+            }
 
-                a {
+            .item-work {
+                width: 28%;
+                opacity: 0;
+
+                // 不規則に散らばって見えるよう6パターンをループさせる
+                &:nth-child(6n+1) {
+                    transform: rotate(-4deg) translateY(0);
+                }
+
+                &:nth-child(6n+2) {
+                    transform: rotate(3deg) translateY(48px);
+                }
+
+                &:nth-child(6n+3) {
+                    transform: rotate(-3deg) translateY(-20px);
+                }
+
+                &:nth-child(6n+4) {
+                    transform: rotate(5deg) translateY(30px);
+                }
+
+                &:nth-child(6n+5) {
+                    transform: rotate(-5deg) translateY(8px);
+                }
+
+                &:nth-child(6n+6) {
+                    transform: rotate(2deg) translateY(-32px);
+                }
+
+                .img {
                     display: block;
+                    position: relative;
                     width: 100%;
-                    border: 2px solid #666;
+                    aspect-ratio: 4 / 3;
+                    border: 1px solid #222;
                     overflow: hidden;
 
                     img {
-                        transition: all .5s;
+                        position: absolute;
+                        inset: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transition: transform .5s;
                     }
 
                     &:hover img {
                         transform: scale(1.1);
-                        transition: all .5s;
                     }
+                }
+
+                .lick-text {
+                    display: block;
+                    text-decoration: none;
+                    font-family: 'Itim', cursive;
+                    font-size: 18px;
+                    color: #333;
                 }
 
                 p {
                     display: block;
-                    margin-top: 8px;
+                    margin-top: 2px;
                     font-size: 14px;
                     text-align: left;
                 }
 
+                // SPでも不規則な散らばりを維持しつつ、幅を絞って回転してもはみ出さないようにする。
+                // 1カラムの縦並びになるSPでは、desktopと同じtranslateY(上下位置ずらし)を
+                // 使うとカード同士が重なってしまうため、回転のみ残してtranslateYは0にする
                 @include sp {
-                    max-width: 400px;
-                    width: 100%;
+                    max-width: 300px;
+                    width: 85%;
                     margin: 0 auto;
+
+                    &:nth-child(6n+1) {
+                        transform: rotate(-3deg);
+                    }
+
+                    &:nth-child(6n+2) {
+                        transform: rotate(2deg);
+                    }
+
+                    &:nth-child(6n+3) {
+                        transform: rotate(-2deg);
+                    }
+
+                    &:nth-child(6n+4) {
+                        transform: rotate(3deg);
+                    }
+
+                    &:nth-child(6n+5) {
+                        transform: rotate(-3deg);
+                    }
+
+                    &:nth-child(6n+6) {
+                        transform: rotate(1deg);
+                    }
                 }
             }
         }
     }
 
+    // 【10社様限定】。cssとの表記ゆれがあったため合わせて追記（本来はここにあるべきブロック）
+    .subscription-content {
+        margin: 0 0 120px;
+    }
+
+    // ABOUTはFVと同じく画面の縦幅いっぱいに使う
     .about-area {
-        margin: 80px 0 40px 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 0 120px 0;
 
         h2 {
             margin-bottom: 40px;

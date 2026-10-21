@@ -1,0 +1,351 @@
+@use "responsive" as *;
+
+// トップページ ファーストビュー（Figma「TOPファーストビュー1〜5」）
+// 1) 顔が、画面の下から半分だけ覗き込んでくる
+// 2) 「原龍我」が上から1文字ずつ、勢いよく落ちて弾む
+// 3) 「webのことなら」を下からフェードイン
+// 4) スクロールすると：「webのことなら」「原龍我」が消え、背景が白→黄色に。
+//    「始まるよ」も、上から1文字ずつ勢いよく落ちてくる
+// 5) 「始まるよ」が消えながら、顔が一気にあご下まで見えるようになる（インパクト強め）
+// 6) 少し間を置いてから、気持ちよくスムーズに黒のベールへ切り替わり、あとは今まで通りメッセージが流れる
+// 7) 最後にヘッダーをゆっくり表示（表示制御は _header.scss 側）
+// TOPページのファーストビュー専用（#js-mainvisual は下層ページの汎用 .mainvisual と
+// 同じクラスを持つが、ID セレクタで上書きして下層ページには影響させない）
+// FVとスクロールメッセージをピン留めして重ねるための外枠
+// （JS側でこの要素をScrollTriggerのpin対象にする）
+.mv-pin-wrap {
+    position: relative;
+    width: 100%;
+    // 100vh(常に大きい方の固定値)だと、ブラウザのバーが出ている間は実際に見えている画面より
+    // この枠の方が大きくなり、下端に置いているキャラクターがバーの下に隠れて見えなくなってしまう。
+    // 反対に100svh(常に小さい方の固定値)だと、バーが引っ込んだときに下にすき間ができてしまう。
+    // dvh(今実際に見えている高さに合わせて動く値)なら、バーの出入りにかかわらず
+    // 常に「今見えている画面ぴったり」になるので、両方の不具合を避けられる
+    height: 100vh;
+
+    @supports (height: 100dvh) {
+        height: 100dvh;
+    }
+
+    overflow: hidden;
+    background: #fff;
+}
+
+#js-mainvisual {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    // 「webのことなら」「原龍我」は上寄りに、顔はフッターのキャラクターのように画面の一番下に、
+    // それぞれ独立して配置する（.mv-copy / .mv-stage）
+    --mv-fs-t: min(clamp(60px, 15vw, 230px), 21vh); // 「原龍我」の文字サイズ（インパクトを出すため大きめ）
+    --mv-fs-s: min(clamp(15px, 2vw, 28px), 3vh); // 「webのことなら」の文字サイズ
+    background-color: #fff; // スクロールに応じてJS(GSAP)がinlineで書き換える(白→黄色→白)
+
+    @include sp {
+        --mv-fs-t: min(17vw, 21vh);
+        --mv-fs-s: min(4vw, 3vh);
+    }
+}
+
+// メッセージが流れてくる間、FVの上にかける黒のベール（Figma: 黒 不透明度65%）。
+// 不透明度はJS(message-scroll.js)がスクロールに合わせて0→1にする
+.mv-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, .65);
+    opacity: 0;
+    pointer-events: none;
+}
+
+// スクロールで下から流れてくるメッセージ（FVの上に重ねて表示）
+.mv-message {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.mv-message-inner {
+    // min()/clamp()に未対応の古いブラウザ向けに、先に通常の指定を書いておく
+    width: 88%;
+    width: min(760px, 88%);
+    padding: 0 8px;
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 20px;
+    font-size: clamp(15px, 1.8vw, 26px);
+    line-height: 2.6;
+    letter-spacing: .04em;
+    text-align: center;
+    will-change: transform;
+    transform: translateY(100%);
+
+    p {
+        margin: 0 0 2.6em;
+        // 強調度(opacity / scale)はJS(message-scroll.js)がスクロールに合わせて書き換える。
+        // 中央揃えの文章なので、拡大縮小は中央を基準にする
+        transform-origin: center center;
+    }
+
+    @include sp {
+        // スマホで小さく見えないよう大きめに（画面幅に応じて 18〜24px）
+        font-size: 18px;
+        font-size: clamp(18px, 5.2vw, 24px);
+        // ただし、一番長い行（「どんどん簡単になっていくと思います。」＝約18.2文字ぶん）が
+        // 画面幅に収まる大きさまでにする。画面幅350px以上なら、<br>以外の箇所では改行しない
+        width: calc(100% - 20px);
+        padding: 0;
+        letter-spacing: .02em;
+        font-size: min(clamp(18px, 5.2vw, 24px), calc((100vw - 20px) / 18.4));
+        line-height: 2.1;
+
+        p {
+            margin: 0 0 1.9em;
+            // 改行は、文節の切れ目(HTMLの<wbr>と<br>)だけで行う。文の途中や、句読点だけが次の行に残る変な折り返しを防ぐ
+            // （1つの文節が幅に収まらないときだけ、anywhereで折り返す）
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+            line-break: strict;
+            text-wrap: balance;
+        }
+    }
+
+    // 画面幅350px以上のスマホでは、<br>以外の箇所で改行しない
+    // （文字サイズを、一番長い行が収まる大きさにしてあるので、はみ出さない。min()に未対応の古いブラウザでは
+    //   文字サイズの調整が効かないため、この指定もしない）
+    @media screen and (min-width: 350px) and (max-width: 767px) {
+        @supports (font-size: min(1px, 2px)) {
+            p {
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
+// キャラクター一式：フッターの顔と同じように、画面の一番下に据える（bottom:0）。
+// 顔画像は縦長(760:1048)なので、幅ではなく高さを基準にサイズを決める
+// （幅基準にすると、横に広い画面で縦にはみ出して「原龍我」と重なってしまうため）
+// 幅は、aspect-ratio(高さから自動計算)に任せず、比率(760/1048)を掛けた具体的な値で指定する。
+// 一部のスマホのブラウザでは、position:absoluteな要素でaspect-ratioから幅を自動計算する処理が
+// うまく効かず、幅が狭くなって顔の両端(耳)が見切れてしまうことがあったため
+.mv-stage {
+    $mv-ratio: 0.7251908397; // 760 / 1048
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    height: min(56vh, 74vw);
+    width: min(56vh * $mv-ratio, 74vw * $mv-ratio);
+    z-index: 1;
+
+    @include sp {
+        height: min(50vh, 66vw);
+        width: min(50vh * $mv-ratio, 66vw * $mv-ratio);
+    }
+}
+
+// 顔の枠(マスク)。クリックできる範囲は、隠れているあご下も含めて常にフルサイズにしておく
+// （overflow:hiddenは要素自体のクリック判定は狭めない。クリップして見えなくするのは中身の描画だけ）
+.mv-character {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    // オパシティのフェードは使わない。完全に画面の外(下)へ隠れた状態から、
+    // 位置の変化だけで、シュッと勢いよく下からせり上がってくる
+    transform: translateY(130%);
+    // 行き過ぎて戻る(バウンド)はさせず、止まる位置でぴたっと止める、鋭いイージング
+    transition: transform .5s cubic-bezier(.16, 1, .3, 1);
+
+    &.is-visible {
+        transform: translateY(0);
+    }
+
+    &.is-clickable {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    &:focus-visible {
+        outline: 3px solid #4a4a4a;
+        outline-offset: 6px;
+        border-radius: 12px;
+    }
+}
+
+// 顔の内側。口元より下がマスクの外(下)に隠れるよう、下にずらしておく（口元は全部見えるように）
+// （translateYの値はJS(message-scroll.js)がスクロールに合わせて書き換える。0%まで戻すと、あご下まで全部見える）
+.mv-character-clip {
+    position: relative;
+    transform: translateY(26%);
+
+    // スマホは画面が縦長で、キャラクター表示エリアの見え方の余裕が違うため、
+    // 唇までしっかり見えるよう、隠す量をPCより少なくする
+    @include sp {
+        transform: translateY(16%);
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    // ---- クリックで顔が変わる（js/mv-click.js）----
+    // 顔の画像を重ねておき、is-active の1枚だけを見せる。切り替えは、重なったままゆっくり入れ替わる（クロスフェード）
+    .mv-face {
+        opacity: 0;
+        transform: scale(.96);
+        transition: opacity .55s ease, transform .55s cubic-bezier(.34, 1.3, .64, 1);
+        -webkit-user-drag: none;
+        user-select: none;
+
+        &.is-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        // 2枚目以降は、1枚目(通常の顔)の上に重ねる
+        &:not(:first-child) {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        // 横長の顔（「ボタン押しすぎ」）。通常の顔より大きく、中央に合わせて置く（Figma: 幅1033px/通常の顔598px）
+        &--wide:not(:first-child) {
+            left: -25%;
+            top: -2%;
+            width: 150%;
+            max-width: none;
+        }
+    }
+}
+
+// テキストの入れ替え（「webのことなら」「原龍我」）。古い文字がすっと消えて、新しい文字がふわっと出る
+.mv-swap {
+    display: inline-block;
+    vertical-align: top;
+    line-height: inherit; // サイト全体の `* { line-height: 1.5 }` を打ち消し、親の行の高さのままにする
+    // サイト全体の `* { font-family: Lato }` も打ち消し、親(原龍我=Itim / webのことなら=Verdana)のフォントのままにする
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    transition: opacity .28s ease, transform .28s ease;
+
+    &.is-out {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
+// 「webのことなら」「原龍我」。顔とは独立に、画面の上寄り（ヘッダーにはかからない程度）に置く
+.mv-copy {
+    position: absolute;
+    left: 50%;
+    top: max(calc(var(--site-header-h) + 12vh), 19%);
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1;
+
+    @include sp {
+        // SPは、キャラクターと重ならない範囲で、画面の中央に置く
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0 16px;
+    }
+}
+
+.mv-copy-sub {
+    margin: 0;
+    font-family: Verdana, Geneva, 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: var(--mv-fs-s);
+    line-height: 1.2;
+    letter-spacing: .08em;
+    color: #000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+
+    &.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mv-copy-title {
+    margin: 10px 0 0;
+    // 文字まわりの余計な行間(ストラット)をなくし、高さを「原龍我」の文字ぶんだけにする
+    font-size: 0;
+    line-height: 0;
+}
+
+// 「原龍我」
+.mv-copy-title-inner {
+    display: inline-block;
+    vertical-align: top;
+    // Itimは漢字を持たないので、'Noto Sans JP'にフォールバックする（ABOUTページの見出し等と同じ組み合わせ）
+    font-family: 'Itim', 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    // 長いテキスト(「ボタン押しすぎ」など)は、JS(mv-click.js)が --mv-title-k で1行に収まるよう縮める
+    font-size: calc(var(--mv-fs-t) * var(--mv-title-k, 1));
+    white-space: nowrap;
+    line-height: .9;
+    color: #000;
+}
+
+// 「原」「龍」「我」の1文字ずつ。初期状態は画面の上の外。JS(mainvisual.js)が1文字ずつ降らせる
+.mv-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-160%);
+}
+
+// スクロールすると背景が黄色に変わり、「始まるよ」が「原龍我」と同じように上から1文字ずつ落ちてくる
+// （Figma「TOPファーストビュー2〜3」）。顔の少し上あたりに、横一列で重ねて表示する。
+// 不透明度・位置はJS(message-scroll.js)がスクロールに合わせて書き換える
+.mv-startyo {
+    position: absolute;
+    left: 50%;
+    top: 34%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    // #js-mainvisual と同じ階層(z-index:1)。HTML上は mainvisual の直後・mv-dim の手前に置き、
+    // 「mainvisualより手前・dimより奥」の順で重なるようにする
+    z-index: 1;
+    pointer-events: none;
+
+    @include sp {
+        // SPは「原龍我」と同じ位置(画面中央)に表示する
+        top: 50%;
+    }
+}
+
+.mv-startyo-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-160%);
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 9vw, 120px);
+    line-height: 1;
+    color: #1a1a1a;
+    white-space: nowrap;
+
+    @include sp {
+        // SPは9vwだと小さいので、もっと大きくする
+        font-size: clamp(56px, 17vw, 110px);
+    }
+}

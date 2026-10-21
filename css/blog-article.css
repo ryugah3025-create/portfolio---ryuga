@@ -1,0 +1,136 @@
+/* BLOG記事ページ（Figma「blog_記事中身」「blog_記事中身の一番下」）
+   紙（背景）は画面に固定し、中の文字（日付・タイトル・本文）だけが上にスライドする */
+
+/* 最後のフッター（ending）は、このページでは表示しない（画面を覆ってしまうため） */
+body.blog-article footer.ending {
+  display: none;
+}
+
+/* ページ全体は動かさない（スクロールは紙の中の文字だけ） */
+body.blog-article,
+html:has(> body.blog-article) {
+  height: 100%;
+  overflow: hidden;
+  background: #d9d9d9;
+}
+
+.blog-article-main {
+  position: fixed;
+  inset: 0;
+  margin: 0; /* サイト共通の main の下余白（100px）を消す */
+  background: #d9d9d9;
+}
+
+/* 紙：画面に固定。背景の紙はPC/SPとも画面いっぱいに広げ、文字は読みやすい幅の列（800px）に収める。
+   紙の画像だけだと色が強く文字が埋もれるため、薄い白を重ねて落ち着かせ、文字色も少し濃くする */
+.blog-paper {
+  position: absolute;
+  inset: 0;
+  color: #4a4646;
+  font-family: "Zen Kurenaido", sans-serif;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),
+    url("/images/blog/card.webp") top center / 100% auto repeat-y;
+}
+
+/* 文字だけが縦にスクロールする。上下はふわっと消えるように縁を薄くする。
+   幅は800pxまで（それより広い画面では中央寄せ。cqwはこの幅を基準に計算される） */
+.blog-paper-scroll {
+  height: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  container-type: inline-size;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+/* 余白はこの内側の要素につける（.blog-paper-scroll自身につけると、cqwの基準が
+   自分の余白ぶん縮んで循環してしまい、文字が意図せず小さくなるため） */
+.blog-paper-inner {
+  padding: 4.3vw 4.3vw 26vh;
+  padding: 4.3cqw 4.3cqw 26vh; /* 下は、画面下のヘッダー（おしながき）と重ならないように余白をとる */
+}
+.blog-paper-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* サイト共通の「* { font-family: Lato }」が子要素に効いてしまうため、紙の中はすべて手書き風フォントにする */
+.blog-paper * {
+  font-family: "Zen Kurenaido", sans-serif;
+  font-style: normal;
+}
+
+/* 日付：左上 */
+.blog-paper-date {
+  line-height: 1.3;
+}
+.blog-paper-year {
+  display: block;
+  font-size: 4.8vw;
+  font-size: 4.8cqw;
+}
+.blog-paper-md {
+  display: block;
+  font-size: 3.2vw;
+  font-size: 3.2cqw;
+}
+
+/* タイトル：中央（Figma 40px）。太字にして目立たせる */
+.blog-paper-title {
+  padding-top: 7.3vw;
+  padding-top: 7.3cqw;
+  font-size: 6.4vw;
+  font-size: 6.4cqw;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* 本文：中央（Figma 28px / 行の高さ60px）。行間はFigmaより広げて読みやすくしている。
+   「。」で文ごとに<p>に分けてあるので、文と文の間（段落間）は margin でさらに広くとる。
+   タイトルとの間も広めにとる */
+.blog-paper-body {
+  width: 91vw;
+  width: 91cqw;
+  margin: 16vw auto 0;
+  margin: 16cqw auto 0;
+  font-size: 4.5vw;
+  font-size: 4.5cqw;
+  line-height: 2.6;
+  text-align: center;
+}
+/* スマホは文字が小さく読みにくいため、大きめにする */
+@media (max-width: 767px) {
+  .blog-paper-body {
+    font-size: clamp(18px, 6.2vw, 24px);
+    font-size: clamp(18px, 6.2cqw, 24px);
+  }
+}
+.blog-paper-body p {
+  margin: 0;
+}
+.blog-paper-body p + p {
+  margin-top: 1.2em;
+}
+
+/* 一覧に戻る・次へ：文章の最後 */
+.blog-paper-nav {
+  display: flex;
+  justify-content: space-between;
+  margin: 14vw 0 0;
+  margin: 14cqw 0 0;
+  font-size: 4.8vw;
+  font-size: 4.8cqw;
+  line-height: 1.3;
+}
+.blog-paper-nav a {
+  color: #000;
+  text-decoration: none;
+}
+@media (hover: hover) {
+  .blog-paper-nav a:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,198 @@
+@use "responsive" as *;
+
+// SERVICE（Figma「企業様へ1〜8」）
+// 背景・文字色は「企業様へ1」の配色（背景 #392f2f / 文字 #fff）で全体を統一する。
+// 縦に長い1本の文章(reel)を、スクロールに合わせて1行ずつ表示しながら上へ送っていく
+$service-bg: #392f2f;
+$service-fg: #fff;
+// 「詳しい内容、気になりませんか？」とYES??/NO??まわりのデザイン上の大きさ
+$cluster-w: 1160;
+$cluster-h: 600;
+
+.service {
+    // JSが動く場合は is-ready が付き、画面いっぱいにピン留めして1行ずつ表示する。
+    // JSが無い・動きを減らす設定の場合は、全ての文言を通常の縦並びで表示する
+    --service-vh: 100vh;
+    // 文字サイズ。デザインの64px(1603px幅)を基準に、幅・高さの小さい方に合わせる
+    --svc-fs: min(clamp(22px, 4vw, 64px), 6.2vh);
+    padding: 80px 0;
+    background: $service-bg;
+    color: $service-fg;
+    font-family: 'Noto Sans JP', sans-serif;
+
+    // ※ svh ではなく vh（アドレスバーが引っ込んだときの最大の高さ）。帯や白い余白ができないように、
+    //    固定表示の他のセクション（FVなど）と高さをそろえる
+
+    // サイト全体の `* { font-family: Lato }` を打ち消し、この中では親のフォントを引き継ぐ
+    * {
+        font-family: inherit;
+        font-style: normal;
+    }
+
+    .service-pin {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-reel {
+        padding: 0 5vw;
+        text-align: center;
+    }
+
+    .service-title {
+        margin: 0;
+        font-family: 'Itim', cursive;
+        font-weight: 400;
+        // デザインは320px(幅1603px)。幅と高さの両方に収める
+        font-size: min(20vw, 34vh);
+        line-height: 1;
+    }
+
+    .service-block {
+        margin-top: calc(var(--svc-fs) * 3.2);
+    }
+
+    .service-title + .service-block {
+        margin-top: calc(var(--svc-fs) * 3);
+    }
+
+    .service-line {
+        font-size: var(--svc-fs);
+        line-height: 1.86;
+        // 長い行が狭い画面で溢れないように折り返しを許可
+        overflow-wrap: anywhere;
+        // 折り返すときは、「め」だけ1文字が残らないよう均等に分ける（未対応のブラウザは今までどおり）
+        text-wrap: balance;
+
+        // 説明の文章（少し小さめ。長い行が1行に収まる）
+        &--md {
+            font-size: calc(var(--svc-fs) * 0.72);
+        }
+
+        &--sm {
+            font-size: calc(var(--svc-fs) * 0.56);
+            margin-top: calc(var(--svc-fs) * 0.2);
+        }
+    }
+
+    // 「気になる?」と、まわりの問いかけ・YES/NO。デザイン(1300 x 980)の位置関係を保つ
+    .service-cluster {
+        position: relative;
+        width: min(92vw, 1160px);
+        aspect-ratio: #{$cluster-w} / #{$cluster-h};
+        margin: calc(var(--svc-fs) * 3.2) auto 0;
+        container-type: inline-size;
+        text-align: left;
+    }
+
+    .service-cluster-item {
+        position: absolute;
+        left: calc(var(--x) / #{$cluster-w} * 100%);
+        // 縦位置も横幅基準(cqw)にして、縦の長さを変えても他の要素の位置が動かないようにする
+        top: calc(var(--y) / #{$cluster-w} * 100cqw);
+        font-size: calc(var(--fs) / #{$cluster-w} * 100cqw);
+        line-height: 1.36;
+        white-space: nowrap;
+    }
+
+    // 「詳しい内容、気になりませんか？」は、クラスター幅の中央に置く
+    .service-cluster-item--center {
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+
+    // YES?? / NO?? 。ホバーはヘッダーのnavと同じ下線アニメーション
+    .service-choice {
+        overflow: hidden;
+        // 下はホバー時の下線(10px)ぶんだけ
+        padding: 0.06em 0 10px;
+        font-family: 'Itim', cursive;
+        color: inherit;
+        text-decoration: none;
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: currentColor;
+            border-radius: 50%;
+            transform: scaleX(0);
+            transition: all .3s ease;
+        }
+
+        &:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+    }
+
+    // SP：改行は、文節の切れ目(HTMLの<wbr>と<br>)だけで行う（「サ／ービス」のような文の途中の折り返しを防ぐ）
+    @include sp {
+        .service-line {
+            word-break: keep-all;
+            line-break: strict;
+        }
+    }
+
+    // SP：YES??とNO??は縦に並べ、画面幅いっぱいになるほど大きくする
+    @include sp {
+        .service-cluster {
+            aspect-ratio: #{$cluster-w} / 1620;
+        }
+
+        .service-choice {
+            // 「YES??」がクラスター幅の約9割になる大きさ。中央に寄せる
+            left: 0;
+            right: 0;
+            width: fit-content;
+            margin: 0 auto;
+            font-size: 34cqw;
+            line-height: 1.36;
+
+            // 「ぼたん」のmargin-topはなし
+            .link-note {
+                margin-top: 0;
+            }
+        }
+
+        .service-choice--yes {
+            top: calc(350 / #{$cluster-w} * 100cqw);
+        }
+
+        .service-choice--no {
+            // YES??との間に余白をあける
+            top: calc(1010 / #{$cluster-w} * 100cqw);
+        }
+    }
+
+    .link-note {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-style: normal;
+    }
+
+    // ---- JSが動くとき：画面いっぱいにピン留めし、reelを絶対配置で上へ送る ----
+    &.is-ready {
+        padding: 0;
+
+        // 固定表示(position:fixed)は、スマホ(iOS)で慣性スクロール中に取り残され、他のセクションに重なって見えることがある。
+        // そのため、ピン留めは position:sticky で行う（JSは高さを与えるだけ）
+        .service-pin {
+            position: sticky;
+            top: 0;
+            height: var(--service-vh);
+        }
+
+        .service-reel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            will-change: transform;
+        }
+    }
+}

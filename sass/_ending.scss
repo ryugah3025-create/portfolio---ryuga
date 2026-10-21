@@ -1,0 +1,188 @@
+@use "responsive" as *;
+
+// 最終フッター（TOPページ。Figma「footer_PC」「footer_SP」）
+// PCは 1603 x 1712、SPは 375 x 503 のキャンバス基準。位置・サイズはデザイン上のpx(--x/--y/--w/--fs)を
+// キャンバス幅に対する割合(%/cqw)に変換して配置する。1画面に収まる大きさで中央に置く
+// PCで見せる範囲の高さ（デザイン上のpx）。顔は y:458〜1712 なので、1300なら顔の約67%が見える
+$ending-pc-h: 1300;
+
+footer.ending {
+    // 旧フッター用の `footer { position: sticky; top: 100vh }` を打ち消す
+    position: relative;
+    top: auto;
+    --ending-vh: 100vh;
+    background: #fff;
+    color: #000;
+    // ヘッダーに隠れないよう上を空ける（値は_header.scss）
+    padding-top: var(--site-header-h);
+    height: var(--ending-vh);
+    box-sizing: border-box;
+    overflow: hidden;
+    font-family: 'Itim', 'Noto Sans JP', sans-serif;
+
+    @supports (height: 100svh) {
+        --ending-vh: 100svh;
+    }
+
+    * {
+        font-family: inherit;
+        font-style: normal;
+    }
+
+    .ending-stage {
+        position: relative;
+        height: 100%;
+        // PCキャンバスの幅（幅・高さのどちらか小さい方に収める）。バー(nav/©)のサイズ計算にも使う
+        --ec-w: min(100cqw, calc(100cqh * 1603 / #{$ending-pc-h}));
+        // キャンバスの大きさを、残りの幅・高さ(cqw / cqh)から決める
+        container-type: size;
+        display: flex;
+        // PCは顔の下半分を画面の下端で切る（下端をそろえる）。SPは中央に全体を置く
+        align-items: flex-end;
+        justify-content: center;
+
+        @include sp {
+            align-items: center;
+        }
+    }
+
+    .ending-canvas {
+        --cw: 1603;
+        // PCは「終わり」と顔の上から約2/3ぶんだけ見せる。それより下は切り取る
+        --ch: #{$ending-pc-h};
+        // 上・左右はアニメーション(降ってくる文字など)がはみ出せるように余裕をもたせ、下だけ切る
+        clip-path: inset(-100% -50% 0 -50%);
+        position: relative;
+        width: min(100cqw, calc(100cqh * var(--cw) / var(--ch)));
+        aspect-ratio: calc(var(--cw)) / calc(var(--ch));
+        container-type: inline-size;
+
+        @include sp {
+            --cw: 375;
+            --ch: 503;
+            clip-path: none;
+        }
+    }
+
+    // 共通：デザイン上のpxを、キャンバス幅基準に変換
+    .ending-face,
+    .ending-title,
+    .ending-menu,
+    .ending-copyright {
+        position: absolute;
+        left: calc(var(--x) / var(--cw) * 100%);
+        top: calc(var(--y) / var(--cw) * 100cqw);
+    }
+
+    .ending-face {
+        --x: 328;
+        --y: 458;
+        --w: 891;
+        width: calc(var(--w) / var(--cw) * 100%);
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        @include sp {
+            --x: 82;
+            --y: 104;
+            --w: 210;
+        }
+    }
+
+    // 「終わり」は1文字ずつ上から降ってくる（ending-footer.js）
+    .ending-title {
+        --x: 296;
+        --y: 69;
+        --fs: 320;
+        margin: 0;
+        display: flex;
+        font-size: calc(var(--fs) / var(--cw) * 100cqw);
+        font-weight: 400;
+        line-height: 1.2;
+        white-space: nowrap;
+
+        @include sp {
+            --x: 73;
+            --y: 0;
+            --fs: 80;
+        }
+    }
+
+    .ending-char {
+        display: block;
+    }
+
+    // nav と ©は、PC・SPとも画面幅いっぱい（左端・右端）に広げて下に置く
+    .ending-bar {
+        position: absolute;
+        left: 48px;
+        right: 48px;
+        bottom: 32px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        font-size: calc(40 / 1603 * var(--ec-w));
+        // 小さくなりすぎないよう下限
+        font-size: max(calc(40 / 1603 * var(--ec-w)), 16px);
+        line-height: 2.05;
+        pointer-events: none;
+
+        @include sp {
+            left: 16px;
+            right: 16px;
+            bottom: 24px;
+            // スマホでは、navが小さく見えないよう大きめに
+            font-size: 22px;
+            line-height: 2;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            position: relative;
+            display: inline-block;
+            color: inherit;
+            text-decoration: none;
+            pointer-events: auto;
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                bottom: 0.25em;
+                left: 0;
+                width: 100%;
+                height: 0.12em;
+                background: currentColor;
+                border-radius: 50%;
+                transform: scaleX(0);
+                transition: all .3s ease;
+            }
+
+            &:hover::after {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        .ending-copyright-wide {
+            margin: 0;
+            white-space: nowrap;
+
+            @include sp {
+                // SPのコピーライトは10px固定
+                font-size: 10px;
+                line-height: 2;
+            }
+        }
+
+        small {
+            font-size: inherit;
+        }
+    }
+}

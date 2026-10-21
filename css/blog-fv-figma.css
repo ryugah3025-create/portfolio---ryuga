@@ -1,0 +1,344 @@
+/* BLOG（Figma「blog_FV1」「blog_記事一覧」）
+   FV：画面に固定。スクロールすると、中央の画像とBLOGが消え、そのあと記事一覧が出てくる
+   記事一覧：固定した画面の中で、縦長カードを上下に不規則に散らして横スクロール（無限ループ） */
+
+/* footerは表示しない（このページだけ） */
+body.blog-page footer.ending {
+  display: none;
+}
+body.blog-page main {
+  margin-bottom: 0;
+}
+
+/* スクロール量を確保する（FVと記事一覧は固定したまま、この分だけスクロールさせる） */
+.blog-spacer {
+  height: 350vh;
+}
+/* 記事一覧が出たら余白をなくし、ページ全体を固定する（縦に動かない。js/blog-fv-figma.js が is-blog-list を付ける） */
+body.blog-page.is-blog-list .blog-spacer {
+  height: 0;
+}
+html.is-blog-list,
+body.blog-page.is-blog-list {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body.blog-page.is-blog-list {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+/* ---- FV ---- */
+.blog-fv-figma {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  background: #d9d9d9;
+  overflow: hidden;
+}
+
+/* 中央の画像。Figmaの位置（横の中央・縦はやや上寄り）。js/blog-fv-figma.js が、スクロールに合わせて縮めて消す */
+.blog-fv-figma-image {
+  visibility: hidden; /* js/blog-fv-figma.js が、少し後にいきなり表示する */
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  transform: translate(-50%, -50%);
+  width: min(28vw, 36vh);
+}
+.blog-fv-figma-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 右下の「BLOG」。Figmaは画面幅に対して 128px 相当 */
+.blog-fv-figma-title {
+  visibility: hidden; /* js/blog-fv-figma.js が、読み込み後にいきなり表示する */
+  position: absolute;
+  right: 2.4vw;
+  bottom: 7vh;
+  margin: 0;
+  font-family: "Itim", cursive;
+  font-weight: 400;
+  font-size: min(8vw, 14vh);
+  line-height: 1;
+  color: #000;
+  white-space: nowrap;
+}
+
+.blog-fv-figma-image.is-shown,
+.blog-fv-figma-title.is-shown {
+  visibility: visible;
+}
+
+/* ---- 記事一覧 ---- */
+.blog-list {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background: #d9d9d9;
+  visibility: hidden; /* js/blog-fv-figma.js が、FVが消えたら表示する */
+}
+.blog-list.is-shown {
+  visibility: visible;
+}
+
+/* 案内（しばらく操作がないと出る）。矢印が左右に揺れて、横に動かせることを伝える */
+.blog-list-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 7vh;
+  z-index: 1;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: "Zen Kurenaido", sans-serif;
+  font-size: clamp(18px, 2.6vw, 26px);
+  line-height: 1;
+  color: #6a6666;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.blog-list-hint.is-shown {
+  opacity: 1;
+}
+.blog-list-hint-arrow {
+  display: inline-block;
+}
+.blog-list-hint.is-shown .blog-list-hint-arrow-left {
+  animation: blog-hint-left 1.6s ease-in-out infinite;
+}
+.blog-list-hint.is-shown .blog-list-hint-arrow-right {
+  animation: blog-hint-right 1.6s ease-in-out infinite;
+}
+@keyframes blog-hint-left {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-8px); }
+}
+@keyframes blog-hint-right {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blog-list-hint.is-shown .blog-list-hint-arrow {
+    animation: none;
+  }
+}
+
+.blog-list-strip {
+  position: absolute;
+  inset: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  /* 横の指の動きだけ使う（縦のスワイプでページが縦に動かないようにする。js/blog-fv-figma.js が縦の動きを横に変える） */
+  touch-action: pan-x;
+  overscroll-behavior: none;
+}
+.blog-list-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.blog-list-track {
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+  width: max-content;
+  margin: 0;
+  padding: 0 0 0 14vw;
+  list-style: none;
+}
+
+/* 記事カード（Figma: 424×754 の縦長。画面の高さの60%） */
+.blog-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 33.74vh;
+  height: 60vh;
+  margin-right: calc(44vw - 33.74vh);
+  container-type: inline-size;
+  background: url("/images/blog/card.webp") center / cover no-repeat;
+  color: #6a6666;
+  opacity: 0; /* js/blog-fv-figma.js が、視界に入ったときに貼るように出す */
+}
+/* 上下に不規則に散らす（3枚1セットで繰り返す。セットの継ぎ目で同じ並びになるよう3の倍数） */
+.blog-card.is-pos-1 {
+  margin-top: 6vh;
+}
+.blog-card.is-pos-2 {
+  margin-top: 26vh;
+}
+.blog-card.is-pos-3 {
+  margin-top: 10vh;
+}
+
+/* サイト共通の「* { font-family: Lato }」が子要素（年・月・タイトル）に効いてしまうため、カードの中は手書き風フォントに揃える */
+.blog-card * {
+  font-family: "Zen Kurenaido", sans-serif;
+  font-style: normal;
+}
+
+.blog-card a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 日付：左上（Figma: 2026ねん 30px / 10がつ2 20px。カード幅424pxに対する比率で指定） */
+.blog-card-date {
+  position: absolute;
+  left: 3.3vw;
+  left: 3.3cqw;
+  top: 3.5vw;
+  top: 3.5cqw;
+  display: block;
+  font-family: "Zen Kurenaido", sans-serif;
+  line-height: 1.3;
+}
+.blog-card-year {
+  display: block;
+  font-size: 7.1vw;
+  font-size: 7.1cqw;
+}
+.blog-card-month {
+  display: block;
+  font-size: 4.7vw;
+  font-size: 4.7cqw;
+}
+
+/* タイトル：中央（Figma: 50px / 行の高さ120px） */
+.blog-card-title {
+  position: absolute;
+  left: 3.3vw;
+  left: 3.3cqw;
+  right: 3.3vw;
+  right: 3.3cqw;
+  top: 26.5%;
+  display: block;
+  font-family: "Zen Kurenaido", sans-serif;
+  font-size: 11.8vw;
+  font-size: 11.8cqw;
+  line-height: 2.4;
+  text-align: center;
+}
+
+/* 「みる」：右下（Figma: 50px） */
+.blog-card-more {
+  position: absolute;
+  right: 3.3vw;
+  right: 3.3cqw;
+  bottom: 2%;
+  font-family: "Zen Kurenaido", sans-serif;
+  font-size: 11.8vw;
+  font-size: 11.8cqw;
+  line-height: 1;
+}
+
+@media screen and (max-width: 767px) {
+  .blog-card {
+    width: 46vw;
+    height: auto;
+    aspect-ratio: 424 / 754;
+    margin-right: 10vw;
+  }
+  .blog-card.is-pos-1 {
+    margin-top: 8vh;
+  }
+  .blog-card.is-pos-2 {
+    margin-top: 22vh;
+  }
+  .blog-card.is-pos-3 {
+    margin-top: 12vh;
+  }
+  .blog-list-track {
+    padding-left: 10vw;
+  }
+  .blog-fv-figma-image {
+    width: min(56vw, 36vh);
+  }
+  .blog-fv-figma-title {
+    right: 5vw;
+    bottom: 6vh;
+    font-size: 18vw;
+  }
+}
+
+/* 記事（紙）：FV1の上に、下から出てきて中央で止まり、もう一度スクロールすると上へ消える（js/blog-fv-figma.js が位置を決める） */
+.blog-fv2 {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(100%);
+}
+.blog-fv2-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw, calc(100vh * 1603 / 1254));
+  width: min(100vw, calc(100dvh * 1603 / 1254));
+  aspect-ratio: 1603 / 1254;
+  container-type: inline-size;
+}
+.blog-fv2-card {
+  position: absolute;
+  left: 30.1%;
+  top: 4.9%;
+  width: 39.7%;
+  height: 90.3%;
+  background: url("/images/blog/card.webp") center / 100% 100% no-repeat;
+}
+.blog-fv2-text {
+  position: absolute;
+  left: 7.1%;
+  top: 12.1%;
+  width: 90.4%;
+  font-family: "Zen Kurenaido", sans-serif;
+  font-size: 2.12vw;
+  font-size: 2.12cqw;
+  line-height: 6.5vw;
+  line-height: 6.5cqw;
+  text-align: center;
+  color: #000;
+}
+
+/* スマホでは、記事（紙）を画面の幅いっぱいに近く大きくして、文字を読めるようにする */
+@media (max-width: 767px) {
+  .blog-fv2-stage {
+    width: 100vw;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .blog-fv2-card {
+    left: 50%;
+    top: 50%;
+    width: 88%;
+    height: auto;
+    aspect-ratio: 636 / 1132;
+    transform: translate(-50%, -50%);
+    container-type: inline-size;
+  }
+  .blog-fv2-text {
+    font-size: 5.2vw;
+    font-size: 5.2cqw;
+    line-height: 12vw;
+    line-height: 12cqw;
+  }
+  /* 記事（紙）の下に「BLOG」がかぶらないよう、BLOGを画面の下端へ小さく寄せる */
+  .blog-fv-figma-title {
+    right: 5vw;
+    bottom: 2vh;
+    font-size: 15vw;
+  }
+}

@@ -35,7 +35,7 @@
 }
 
 
-//mainテキスト
+//mainテキスト（下層ページの汎用ファーストビュー。TOPページ固有の演出は _mainvisual.scss 側で上書き）
 .mainvisual {
     width: 100%;
     height: 100vh;
@@ -131,6 +131,8 @@
 
 // ページトップに戻るボタン
 #back-bn {
+    // 一旦非表示（再表示するときはこの display: none を消す）
+    display: none;
     position: fixed;
     right: 80px;
     bottom: 80px;
@@ -170,6 +172,73 @@
     }
 }
 
+// WORKSセクションの.botton-amineは一旦非表示（もっとみるボタンに置き換え）
+.work-content + .botton-amine {
+    display: none;
+}
+
+// もっとみるボタン（headerのnavと同じ下線アニメーション）
+.work-more {
+    margin-top: 8px;
+    text-align: right;
+
+    a {
+        position: relative;
+        display: inline-block;
+        padding: 8px 0 10px;
+        font-family: 'Itim', cursive;
+        font-size: clamp(24px, 4vw, 40px);
+        color: #333;
+        text-decoration: none;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border-radius: 50%;
+            transform: scaleX(0);
+            transition: all .3s ease;
+        }
+
+        &:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+    }
+}
+
+// テキストリンクの右下に小さく添える「ぼたん」。色はリンクの文字色(currentColor)に揃う。
+// リンク本文のすぐ下(余白なし)に右揃えで置く。Figma「aboutセクション5」の「もっと知る」＋「ぼたん」と同じ配置。
+// ホバー時の下線(リンクの::after)はリンクのpadding-bottomの位置に出るので、ぼたんとは重ならない
+.link-note {
+    display: block;
+    text-align: right;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    // 控えめに小さく（本体の約0.2倍）。読めなくなりすぎないよう下限を置く
+    font-size: max(0.2em, 9px);
+    line-height: 1;
+    // 本文の行間の余白(下側)ぶん引き上げて、本文とくっつける
+    margin-top: -1em;
+    letter-spacing: 0;
+    white-space: nowrap;
+    color: inherit;
+    pointer-events: none;
+
+    // スマホは、本文との間が詰まって見えるため、少し離して、文字も少し大きくする
+    @include sp {
+        margin-top: 0.15em;
+        font-size: max(0.24em, 11px);
+    }
+}
+
 .rotateback {
 
     span:nth-child(1) {
@@ -198,13 +267,19 @@
 // スクロールテキスト
 .scrooll {
     position: fixed;
-    top: 64%;
-    right: 10%;
+    z-index: 5; // 顔やキャラクターの上に出す
+    // 画面下の中央（WORKSページの四隅の顔の間）に置く
+    top: auto;
+    bottom: 3vh;
+    left: 50%;
+    margin-left: -20px;
     animation: scroollup 1s ease-in-out infinite;
 
     @include sp {
-        top: 80%;
-        right: 10%;
+        top: auto;
+        bottom: 5vh;
+        left: 50%;
+        right: auto;
         animation: scroollupsp 1s ease-in-out infinite;
     }
 

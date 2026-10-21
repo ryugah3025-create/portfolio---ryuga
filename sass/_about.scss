@@ -1,0 +1,336 @@
+@use "responsive" as *;
+
+// ABOUT（Figma「aboutセクション1〜5」）
+// ABOUTタイトル・「もっと知る」はWORKSセクションと同じく、セクション上部（padding-top 120px）に
+// 通常のレイアウトで置く。それ以外（似顔絵・吹き出し・各ステージの文言）は .about-canvas に入れ、
+// 残りの高さの中で中央配置する。
+// キャンバスはデザイン(1603 x 1540)のうち x:90〜1480 / y:380〜1360 の範囲。
+// 位置は --x / --y（デザイン上のpx）をキャンバス基準の割合に変換して配置し、
+// 文字サイズはcqwでキャンバスと一緒に拡縮する
+$about-x0: 90;
+$about-y0: 380;
+$about-w: 1390;
+$about-h: 980;
+// 配色（Figma「aboutセクション1」）
+$about-bg: #f9ebca;
+$about-fg: #4a2403;
+
+@function about-cqw($px) {
+    @return calc(#{$px} / #{$about-w} * 100cqw);
+}
+
+@function about-left($x) {
+    @return calc((#{$x} - #{$about-x0}) / #{$about-w} * 100%);
+}
+
+@function about-top($y) {
+    @return calc((#{$y} - #{$about-y0}) / #{$about-h} * 100%);
+}
+
+.about-scroll {
+    // JSが動くときは、position:sticky でピン留めする（fixedはiOSで慣性スクロール中に取り残されるため）
+    &.is-sticky .about-scroll-pin {
+        position: sticky;
+        top: 0;
+    }
+
+    // 次のSERVICEセクション(暗い背景)に切れ目なくつなげる
+    margin: 0;
+    background: $about-bg;
+    color: $about-fg;
+    // モバイルのアドレスバーを除いた高さがあれば、それを基準にする
+    --about-vh: 100vh;
+    // タイトルの上の余白。WORKSセクション(.work-content)のpadding-topと同じ
+    --about-head-top: 120px;
+
+    // スマホは、見出しとテキストリンクの上の余白をほぼなくす
+    @include sp {
+        --about-head-top: 12px;
+    }
+
+    // ※ 100svh ではなく 100vh（＝アドレスバーが引っ込んだときの最大の高さ）を使う。
+    //    svh だと、アドレスバーが引っ込んだとき固定表示の下に帯ができ、次のSERVICE(暗い背景)や白い余白がのぞく
+
+    // 縦に短い画面では、ヘッダーを小さくしているのに合わせて余白も詰める
+    @media (max-height: 640px) {
+        --about-head-top: 84px;
+
+        @include sp {
+            --about-head-top: 12px;
+        }
+    }
+
+    // 画面いっぱい(高さ固定)で、上から「タイトル行」「キャンバス(残り全部・中央配置)」
+    .about-scroll-pin {
+        height: var(--about-vh);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        > .content {
+            width: 100%;
+            flex: none;
+        }
+    }
+
+    .about-head {
+        // タイトルのサイズ。WORKSと同じサイズを上限に、縦に短い画面では高さに合わせて縮める
+        --about-title-fs: min(clamp(48px, 10vw, 128px), 14vh);
+        padding-top: var(--about-head-top);
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: 'Itim', 'Noto Sans JP', sans-serif;
+    }
+
+    .about-stage {
+        flex: 1;
+        min-height: 0;
+        padding-bottom: min(24px, 3vh);
+        // キャンバスの大きさを、残りの幅・高さ(cqw / cqh)から決める
+        container-type: size;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .about-canvas {
+        position: relative;
+        width: min(100cqw, calc(100cqh * #{$about-w} / #{$about-h}));
+        aspect-ratio: #{$about-w} / #{$about-h};
+        container-type: inline-size;
+        font-family: 'Itim', 'Noto Sans JP', sans-serif;
+        color: $about-fg;
+
+        * {
+            font-family: inherit;
+        }
+    }
+
+    // ABOUT。WORKSのタイトルと同じフォント。表示アニメーションはJS（about-scroll.js）で行う
+    .about-title {
+        overflow: visible;
+        text-align: left;
+
+        span {
+            display: inline-block;
+            font-family: 'Itim', cursive;
+            font-weight: 400;
+            font-size: var(--about-title-fs);
+            line-height: 1;
+            color: $about-fg;
+            transform-origin: center center;
+        }
+    }
+
+    // aboutページへのリンク。ホバーはヘッダーのnav（_header.scss .h-menu a）と同じ下線アニメーション
+    %about-link {
+        position: absolute;
+        display: block;
+        // 下はホバー時の下線(10px)ぶんだけ
+        padding: 16px 0 10px;
+        color: $about-fg;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: $about-fg;
+            border-radius: 50%;
+            transform: scaleX(0);
+            transition: all .3s ease;
+        }
+
+        &:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+    }
+
+    .link-note {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-style: normal;
+    }
+
+    .about-more-top {
+        @extend %about-link;
+        position: relative;
+        // デザイン上はタイトル(128px)に対して67px
+        font-size: calc(var(--about-title-fs) * 0.52);
+        line-height: 1.4;
+
+        // 幅の狭いスマホ(〜360px)ではタイトルとの間が詰まりすぎないよう、少し小さくする
+        @media screen and (max-width: 360px) {
+            font-size: calc(var(--about-title-fs) * 0.44);
+        }
+    }
+
+    .about-face {
+        position: absolute;
+        left: about-left(510);
+        top: about-top(410);
+        width: calc(569 / #{$about-w} * 100%);
+
+        img {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    .about-lines {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        // 上にあるリンクのホバー・クリックを邪魔しない
+        pointer-events: none;
+
+        polyline {
+            fill: none;
+            // 吹き出しの線はFigmaのとおり黒
+            stroke: #000;
+            stroke-width: 3;
+            stroke-linejoin: round;
+            // 線が引かれる前(長さ0)に丸い点が見えてしまうブラウザ(Safari / Firefox)があるため、端は平らにする
+            stroke-linecap: butt;
+        }
+    }
+
+    .about-labels {
+        list-style: none;
+
+        li {
+            position: absolute;
+            left: calc((var(--x) - #{$about-x0}) / #{$about-w} * 100%);
+            top: calc((var(--y) - #{$about-y0}) / #{$about-h} * 100%);
+            font-size: about-cqw(34);
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+    }
+
+    .about-caption {
+        position: absolute;
+        left: about-left(712);
+        top: about-top(1258);
+        font-size: about-cqw(64);
+        line-height: 1.2;
+    }
+
+    .about-note {
+        position: absolute;
+        left: about-left(1047);
+        top: about-top(1190);
+        font-size: about-cqw(22);
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+    // ステージ3〜5のテキスト。JSが無い場合は非表示のまま（上部のリンクは常に表示）
+    .about-question,
+    .about-more-large {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        visibility: hidden;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    // ステージ5「まだかな？」「まだまだ？」。上から順に表示する
+    .about-wonder {
+        position: absolute;
+        left: calc((var(--x) - #{$about-x0}) / #{$about-w} * 100%);
+        top: calc((var(--y) - #{$about-y0}) / #{$about-h} * 100%);
+        font-size: calc(var(--fs) / #{$about-w} * 100cqw);
+        line-height: 1.36;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .about-question {
+        color: inherit;
+        font-size: about-cqw(44);
+    }
+
+    .about-more-large {
+        @extend %about-link;
+        left: about-left(429);
+        top: about-top(969);
+        transform: none;
+        line-height: 1.36;
+        font-size: about-cqw(140);
+    }
+
+    // 「VIEW MORE」を手描きの線で囲む（線はjs/about-scroll.jsが、文字が出たあとに描いていく）。
+    // 線が文字の外にはみ出して見えるよう、%about-linkのoverflow:hiddenを戻し、下線のホバーはなしにする。
+    // 線の位置と大きさはFigma「aboutセクション5」の数値(文字140pxに対して、線は968×322・左上に81pxずつ外)を
+    // 文字の大きさ(em)に置きかえたもの
+    .about-more-large {
+        overflow: visible;
+
+        &::after {
+            display: none;
+        }
+    }
+
+    .about-more-large-text {
+        position: relative;
+        display: inline-block;
+    }
+
+    .about-more-large-line {
+        position: absolute;
+        left: -0.58em;
+        top: -0.4em;
+        width: 6.92em;
+        height: 2.3em;
+        overflow: visible;
+        pointer-events: none;
+
+        path {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+            transition: stroke-width .3s ease;
+        }
+    }
+
+    .about-more-large:hover .about-more-large-line path {
+        stroke-width: 3;
+    }
+
+    @include sp {
+        // 極端に小さくならないよう下限を設ける
+        .about-labels li {
+            font-size: max(#{about-cqw(34)}, 10px);
+        }
+
+        .about-note {
+            font-size: max(#{about-cqw(22)}, 8px);
+        }
+
+        .about-question {
+            font-size: max(#{about-cqw(44)}, 15px);
+        }
+
+        .about-wonder {
+            font-size: max(calc(var(--fs) / #{$about-w} * 100cqw), calc(var(--fs) * 0.28px));
+        }
+    }
+}

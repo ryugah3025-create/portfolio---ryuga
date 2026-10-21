@@ -6,18 +6,9 @@
             </div>
             <div class="modal-text-area">
                 <h1 class="modal-title"></h1>
-                <dl>
-                    <dt>概要：</dt>
-                    <dd class="overview-text"></dd>
-                    <dt>制作範囲：</dt>
-                    <dd class="range-text"></dd>
-                    <dt>制作期間：</dt>
-                    <dd class="period-text"></dd>
-                    <dt>使用ツール：</dt>
-                    <dd class="tool-text"></dd>
-                    <dt>使用言語：</dt>
-                    <dd class="language-text"></dd>
-                </dl>
+                <p class="modal-note"></p>
+                <!-- 項目（サイトのコンセプト・担当した内容など）は、下のtargetModalArrayの内容から自動で並べる -->
+                <dl class="modal-detail"></dl>
                 <div class="botton-amine rotateback">
                     <a class="more-btn" href="" target="_blank"><span>MORE</span><span>click</span></a>
                 </div>
@@ -31,11 +22,20 @@
 
     const modalThumbnail = document.querySelector(".modal-thumbnail");
     const modalTitle = document.querySelector(".modal-title");
-    const overviewText = document.querySelector(".overview-text");
-    const rangeText = document.querySelector(".range-text");
-    const periodText = document.querySelector(".period-text");
-    const toolText = document.querySelector(".tool-text");
-    const languageText = document.querySelector(".language-text");
+    const modalNote = document.querySelector(".modal-note");
+    const modalDetail = document.querySelector(".modal-detail");
+    // モーダルに表示する項目と見出し。値が空の項目は表示しない
+    // （値を配列にすると、1要素ずつ段落に分けて表示する）
+    const modalFields = [
+        { key: "purpose", label: "サイトのコンセプト：" },
+        { key: "overview", label: "概要：" },
+        { key: "role", label: "担当した内容：" },
+        { key: "range", label: "制作範囲：" },
+        { key: "period", label: "制作期間：" },
+        { key: "update", label: "公開後の更新方法：" },
+        { key: "tool", label: "使用ツール：" },
+        { key: "language", label: "使用言語：" },
+    ];
     const moreBtn = document.querySelector(".more-btn");
     const eventBtn = (event) => {
         const nowClickedElement = event.currentTarget;
@@ -49,13 +49,27 @@
 
         modalThumbnail.setAttribute('src', resultModalContent.thumbnail);
         modalTitle.textContent = resultModalContent.titlemodal;
-        overviewText.textContent = resultModalContent.overview;
-        rangeText.textContent = resultModalContent.range;
-        periodText.textContent = resultModalContent.period;
-        toolText.textContent = resultModalContent.tool;
-        languageText.textContent = resultModalContent.language;
+        modalNote.textContent = resultModalContent.note || "";
+        modalNote.style.display = resultModalContent.note ? "" : "none";
+        modalDetail.innerHTML = "";
+        modalFields.forEach(field => {
+            const value = resultModalContent[field.key];
+            if (!value || (Array.isArray(value) && !value.length)) return;
+            const dt = document.createElement("dt");
+            dt.textContent = field.label;
+            const dd = document.createElement("dd");
+            (Array.isArray(value) ? value : [value]).forEach(text => {
+                const para = document.createElement("p");
+                para.textContent = text;
+                dd.appendChild(para);
+            });
+            modalDetail.appendChild(dt);
+            modalDetail.appendChild(dd);
+        });
         moreBtn.href = resultModalContent.link;
         moreBtn.setAttribute('href', resultModalContent.lick);
+        // リンク先がない実績(デモサイトなど)は、MOREボタンを出さない
+        moreBtn.parentNode.style.display = resultModalContent.lick ? "" : "none";
         modal.classList.add("is-active");
     };
     modalBtn.forEach(ele => {ele.addEventListener("click", eventBtn)});
@@ -71,12 +85,66 @@
     };
     window.addEventListener("click", frameClose)
 
+    // モーダル表示中は、後ろのページ(本体)をスクロールさせない。
+    // ※ bodyにoverflow:hiddenは使わない（position:stickyが効かなくなるため）ので、
+    //   wheel/touchmove/キー操作を捕まえて止める。captureで先に受け取り、
+    //   works-gallery.js・top-works.jsのスクロール演出にも届かないようにする。
+    //   モーダル自体(.modal)に縦スクロールの余地があるときだけ、その中はスクロールできる
+    const modalCanScroll = (dy) => {
+        if (dy < 0) return modal.scrollTop > 0;
+        if (dy > 0) return modal.scrollTop + modal.clientHeight < modal.scrollHeight - 1;
+        return false;
+    };
+    window.addEventListener("wheel", (e) => {
+        if (!modal.classList.contains("is-active")) return;
+        e.stopPropagation();
+        if (!modal.contains(e.target) || !modalCanScroll(e.deltaY)) e.preventDefault();
+    }, { capture: true, passive: false });
+    let modalTouchY = null;
+    window.addEventListener("touchstart", (e) => {
+        if (!modal.classList.contains("is-active")) return;
+        e.stopPropagation();
+        modalTouchY = e.touches.length === 1 ? e.touches[0].clientY : null;
+    }, { capture: true, passive: true });
+    window.addEventListener("touchmove", (e) => {
+        if (!modal.classList.contains("is-active")) return;
+        e.stopPropagation();
+        if (modalTouchY === null) { e.preventDefault(); return; }
+        const y = e.touches[0].clientY;
+        const dy = modalTouchY - y;
+        modalTouchY = y;
+        if (!modalCanScroll(dy)) e.preventDefault();
+    }, { capture: true, passive: false });
+    window.addEventListener("keydown", (e) => {
+        if (!modal.classList.contains("is-active")) return;
+        if (e.key === "Escape") { eventClose(); return; }
+        const step = { ArrowDown: 40, ArrowUp: -40, PageDown: modal.clientHeight * 0.9, PageUp: -modal.clientHeight * 0.9, " ": modal.clientHeight * 0.9, End: modal.scrollHeight, Home: -modal.scrollHeight, ArrowLeft: 0, ArrowRight: 0 }[e.key];
+        if (step === undefined) return;
+        e.stopPropagation();
+        e.preventDefault();
+        modal.scrollBy(0, e.shiftKey && e.key === " " ? -step : step);
+    }, true);
+
     const targetModalArray = [
         {
+            id: "demo",
+            thumbnail: "/images/works/demo-site.jpg",
+            titlemodal: "デモサイト（LPサイト）",
+            purpose: [
+                "まだサイトを持っていない企業様や、以前に作ったサイトをリニューアルしたいけれど予算は抑えたい方に向けて作りました。",
+                "早く用意したい、でもデザイン性と機能性にはこだわりたいという方にぴったりです。",
+                "このデモサイトは販売も行っています。運用サービスをご利用の場合は、このサイトを無償で提供しますので、まずはお気軽にご相談ください。",
+            ],
+            role: "企画（コンセプトづくり）→ 設計（ページ構成）→ デザイン → 開発（サイトの制作）",
+            period: "約1.5か月",
+            lick: "https://ryuga325.digick.jp/subscription/indexDemo.html",
+        },
+        {
+            // ポートフォリオ（現在は一覧に表示していない）
             id: 1,
-            thumbnail: "https://ryuga325.digick.jp/images/modal_ph01.jpg",
+            thumbnail: "/images/works/portfolio.jpg",
             titlemodal: "店名：ポートフォリオ",
-            overview: "このサイトは、自身が一から手がけた作品や、関わってきたプロジェクトを記録として残しておくために立ち上げました。",
+            overview: "これから先、便利なツールやAIが進化し、一定のクオリティのWebサイトは、誰でも作れる時代になっていくと思います。だからこそ、これからのWeb制作で大切になるのは、「誰と仕事をするのか」「どんな想いを持っているのか」「どのようなプロセスで形にしていくのか」そして、人だからこそ考えられる「その企業・お店にしかない表現」だと考えています。このポートフォリオでは、単に制作実績を並べるのではなく、「この人と一緒に仕事をしたい」と思っていただけることを目指しました。一つひとつのサイトに込めた意図や、デザイン・構成の背景まで含めて、制作物をご紹介しています。",
             range: "企画、設計、デザイン、開発",
             period: "1.5ヶ月",
             tool: "Photoshop/Illustrator/VSCode",
@@ -85,47 +153,56 @@
         },
         {
             id: 2,
-            thumbnail: "https://ryuga325.digick.jp/images/modal_ph02.jpg",
-            titlemodal: "店名：1/f private salon",
-            overview: "知人の紹介でネイルサロンのWebサイトを制作しました。オーナーさんに掲載したい情報やデザインのイメージをヒアリングし、店内の雰囲気に合わせたデザインを提案し、企画から制作までを一貫して担当しました。",
-            range: "企画、設計、デザイン、開発、運用",
-            period: "2ヶ月",
-            tool: "Photoshop/Illustrator/VSCode",
-            language: "HTML/PHP/SCSS(CSS)/JavaScript(jQuery)/CMS（一部使用)",
+            thumbnail: "/images/works/nail-1f.jpg",
+            titlemodal: "1/f private salon（長野県松本市・プライベートサロン）",
+            purpose: [
+                "プライベートサロンの魅力である、落ち着いた空間と心地よさを、Webサイトでも感じていただくこと。",
+                "情報を伝えるだけでなく、サイトを開いた瞬間から「この空間でゆっくり過ごしてみたい」と思っていただけるよう、余白を活かした落ち着きのあるデザインにしました。写真・色・文字・余白のバランスを意識して設計し、サロンの世界観をそのままWeb上で表現しています。",
+            ],
+            role: ["企画（コンセプトづくり）→ 設計（ページ構成）→ デザイン → 開発（サイトの制作）→ 公開",],
+            period: "約2か月",
+            update: "WordPressで構築しているため、お知らせなどの更新や運用は、お客様ご自身で行っていただいています。",
             lick: "https://fbunno1.mods.jp/",
         },
         {
             id: 3,
-            thumbnail: "https://ryuga325.digick.jp/images/modal_ph03.jpg",
-            titlemodal: "店名：武蔵家 松戸店",
-            overview: "武蔵家の魅力をもっと多くの人に届けたいと思い、QRコードでアクセスできるスマホに特化した紹介サイトを作成しました。並んでる間にも食欲が爆発する、よだれ注意なサイトを作成しました！",
-            range: "企画、設計、デザイン、開発",
-            period: "2ヶ月",
-            tool: "Photoshop/Illustrator/Git/VSCode",
-            language: "HTML/SCSS(CSS)/JavaScript",
+            thumbnail: "/images/works/musashiya.jpg",
+            titlemodal: "武蔵家 松戸店（ラーメン店）のQRサイト",
+            purpose: [
+                "料理を待っている時間や、列に並んでいる時間に見てもらうためのサイト。",
+                "「食べる前に、もっとこの店やラーメンのことを知ってもらう。」知れば知るほど「早く食べたい」「もっと食べたい」と思ってもらえるよう、来店前の期待感を高めることを目的にしました。限られた時間でも楽しんで見てもらえるよう、写真や文章の見せ方、ページの流れまで含めて設計しています。",
+            ],
+            role: "企画（コンセプトづくり）→ 設計（ページ構成）→ デザイン → 開発（サイトの制作）",
+            period: "約2か月",
+            update: "公開後の修正や更新は、その都度ご連絡をいただき、制作した私が直接対応しています。",
             lick: "http://matsudo-musashiya.site/",
         },
         {
             id: 4,
-            thumbnail: "https://ryuga325.digick.jp/images/modal_ph04.jpg",
-            titlemodal: "店名：訪問看護ステーション 中川",
-            overview: "代表の熱い想いと事業の真価を整理し、地域に信頼を届けるWebサイトへ。「悪くなってからではなく、悪くならないように支える」という姿勢と、一人ひとりの人生に誠実に寄り添う看護のかたちを、安心感のあるデザインと丁寧な情報設計で表現しました。",
-            range: "企画、設計、デザイン、開発",
-            period: "2ヶ月",
-            tool: "Photoshop/Illustrator/VSCode",
-            language: "HTML/SCSS(CSS)/JavaScript",
+            thumbnail: "/images/works/nakagawa.jpg",
+            titlemodal: "訪問看護ステーション 中川（訪問看護）",
+            purpose: [
+                "看護を必要としている方やそのご家族が見たときに、「ここなら安心して相談できそう」と思っていただけるように作りました。",
+                "サービスの説明だけでなく、「どんな想いで、この仕事をしているのか」まで伝えることを大切にしました。「悪くなってからではなく、悪くならないように支える」という姿勢や、一人ひとりの人生に誠実に寄り添う看護のあり方を、安心感がありきっちりとしたデザインで表現しています。代表の想いと事業の価値を整理し、言葉とデザインに落とし込みました。",
+            ],
+            role: "企画（コンセプトづくり）→ 設計（ページ構成）→ デザイン → 開発（サイトの制作）",
+            period: "約2か月",
+            update: "公開後は、分析をもとに目的に合わせた修正や更新を、対応させていただいております。",
             lick: "https://houmon-nakagawa.site/",
         },
         {
             id: 5,
-            thumbnail: "https://ryuga325.digick.jp/images/modal_ph.jpg",
-            titlemodal: "店名：株式会社 4life",
-            overview: "代表から直接伺った熱い想いや会社のコンセプトを深く噛み砕き、その世界観をそのままサイトのデザインへ愚直に落とし込んでいます。言葉とデザインが一丸となったサイトを、ぜひご覧ください。",
-            range: "企画、設計、デザイン、開発",
-            period: "1.5ヶ月",
-            tool: "Photoshop/Illustrator/VSCode",
-            language: "HTML/SCSS(CSS)/JavaScript",
-            lick: "https://houmon-nakagawa.site/",
+            thumbnail: "/images/modal_ph.jpg",
+            titlemodal: "株式会社 4life（コーポレートサイト）",
+            note: "※現在、公開準備中です。公開まで、いましばらくお待ちください。",
+            purpose: [
+                "代表から直接伺った熱い想いと会社のコンセプトを、言葉とデザインの両方で伝えるためのサイトです。",
+                "想いやコンセプトを深く噛み砕き、その世界観をそのままデザインに落とし込みました。言葉とデザインが一丸となった、会社らしさが伝わるサイトを目指しています。",
+            ],
+            role: "企画（コンセプトづくり）→ 設計（ページ構成）→ デザイン → 開発（サイトの制作）",
+            period: "約1.5か月",
+            // 公開準備中のため、MOREボタンは出さない
+            lick: "",
         },
         {
             id: "private1",

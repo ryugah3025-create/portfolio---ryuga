@@ -1,0 +1,147 @@
+// コンテナクエリ(cqw / cqh)に未対応の古いブラウザ向けのフォールバック。
+// header.php の先頭のスクリプトが、未対応のとき <html class="no-cq"> を付ける。
+// その場合、JSの演出(about-scroll / service-reel / ending-footer)は動かさず、
+// ABOUT・SERVICE・最終フッターは「位置を固定した演出用レイアウト」ではなく、読める静的な縦並びで表示する。
+// （対象: Chrome 105未満 / Safari 16未満 / Firefox 110未満 など）
+html.no-cq {
+
+    // ---- ABOUT ----
+    .about-scroll {
+        .about-scroll-pin {
+            display: block;
+            height: auto;
+            overflow: visible;
+            padding-bottom: 64px;
+        }
+
+        .about-stage {
+            container-type: normal;
+            display: block;
+            height: auto;
+            padding: 0 16px;
+        }
+
+        .about-canvas {
+            container-type: normal;
+            position: static;
+            width: auto;
+            aspect-ratio: auto;
+            text-align: center;
+        }
+
+        .about-face {
+            position: static;
+            width: min(60%, 320px);
+            margin: 0 auto 16px;
+        }
+
+        .about-lines {
+            display: none;
+        }
+
+        .about-labels {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 20px;
+            margin-bottom: 16px;
+
+            li {
+                position: static;
+                font-size: 16px;
+            }
+        }
+
+        .about-caption,
+        .about-note {
+            position: static;
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+
+        .about-question,
+        .about-wonder,
+        .about-more-large {
+            position: static;
+            display: block;
+            margin: 0 0 12px;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            font-size: 20px;
+        }
+
+        .about-more-large {
+            font-size: 28px;
+        }
+
+        .about-more-large-line {
+            display: none;
+        }
+    }
+
+    // ---- SERVICE ----
+    .service {
+        .service-cluster {
+            container-type: normal;
+            width: auto;
+            aspect-ratio: auto;
+            margin: 24px 16px 0;
+            text-align: center;
+        }
+
+        .service-cluster-item,
+        .service-choice {
+            position: static;
+            display: block;
+            margin: 0 0 12px;
+            font-size: clamp(20px, 5vw, 36px);
+            white-space: normal;
+        }
+
+        .service-choice {
+            font-size: 40px;
+        }
+    }
+
+    // ---- 最終フッター ----
+    footer.ending {
+        height: auto;
+        min-height: 100vh;
+        padding: 48px 16px 120px;
+        overflow: visible;
+
+        .ending-stage {
+            container-type: normal;
+            display: block;
+            height: auto;
+        }
+
+        .ending-canvas {
+            container-type: normal;
+            position: static;
+            width: auto;
+            aspect-ratio: auto;
+            clip-path: none;
+            text-align: center;
+        }
+
+        .ending-face {
+            position: static;
+            width: min(50%, 320px);
+            margin: 16px auto 0;
+        }
+
+        .ending-title {
+            position: static;
+            justify-content: center;
+            font-size: clamp(64px, 18vw, 160px);
+        }
+
+        .ending-bar {
+            position: static;
+            margin-top: 24px;
+            font-size: 16px;
+        }
+    }
+}

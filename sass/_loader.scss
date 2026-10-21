@@ -1,0 +1,146 @@
+@use "responsive" as *;
+
+// ローディング中は、ページ中身(ヘッダー・本文・フッター)のCSSアニメーションを止める。
+// 一時停止のまま開始位置で待ち、ローディングが終わって is-loading が外れたときに、最初から始まる
+html.is-loading header *,
+html.is-loading main *,
+html.is-loading footer * {
+    animation-play-state: paused !important;
+}
+
+// サイトローディングアニメーション（顔アイコンを3ドットのパルスローダーとして使用）
+.site-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .6s ease, visibility .6s ease;
+
+    &.is-loaded {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+.site-loader-caption {
+    position: absolute;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    letter-spacing: .05em;
+    color: #333;
+    white-space: nowrap;
+
+    &--top {
+        top: 32px;
+        left: 32px;
+    }
+
+    &--bottom {
+        bottom: 32px;
+        right: 32px;
+        animation: caption-pulse 1.9s ease-in-out infinite;
+    }
+
+    @include sp {
+        font-size: 12px;
+
+        &--top {
+            top: 20px;
+            left: 20px;
+        }
+
+        &--bottom {
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+}
+
+.loader-dot {
+    display: inline-block;
+    animation: dot-pulse 1.9s ease-in-out infinite;
+
+    &:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    &:nth-child(2) {
+        animation-delay: .4s;
+    }
+
+    &:nth-child(3) {
+        animation-delay: 2s;
+    }
+}
+
+.site-loader-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 3vw, 28px);
+}
+
+.site-loader-icon {
+    display: block;
+    overflow: hidden;
+    transform: scale(.4);
+    opacity: 0;
+    animation: dot-pulse 1.9s ease-in-out infinite;
+
+    &.is-lg {
+        width: clamp(56px, 9vw, 140px);
+        height: clamp(56px, 9vw, 140px);
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    &:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    &:nth-child(2) {
+        animation-delay: .2s;
+    }
+
+    &:nth-child(3) {
+        animation-delay: .4s;
+    }
+}
+
+@keyframes dot-pulse {
+
+    0%,
+    100% {
+        transform: scale(.4);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes caption-pulse {
+
+    0%,
+    100% {
+        opacity: .7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}

@@ -1,5 +1,10 @@
 
 
+<?php
+$pageTitle = '非公開の制作実績 | 原龍我（ハラリュウガ）';
+$pagePath = '/works/private/';
+$pageNoindex = true; // 非公開ページなので、検索結果に出さない
+?>
 <?php include ( dirname(__FILE__) . '/../../template/header.php' ); ?>
 
   <main class="work private-work">
