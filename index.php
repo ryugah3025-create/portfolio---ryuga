@@ -50,17 +50,6 @@
         </div>
       </div>
       </div>
-      <!-- <section>
-        <div class="content">
-          <div class="subscription-content">
-            <h2><span>SERVICE</span></h2>
-            <p class="subscription-detail"><span class="redーbold">【50社様限定】 </span>月額制で、集客・採用に強いホームページ制作から運用改善まで、<br class="pc">一貫して対応サービスを行っております。 <br><br>「ホームページから問い合わせが来ない…」<br>「求人応募が来ない・もっと増やしたい…」<br>「古いサイトのままで信頼感がない…」<br><br>そんな悩みを抱える企業様向けに、「作って終わり」ではなく、<br class="pc">集客・採用につながるホームページ制作・運用を行っています。</p>
-            <div class="botton-amine rotateback">
-              <a href="https://ryuga325.digick.jp/subscription/campaign.html"><span>DETAIL</span><span>click</span></a>
-            </div>
-          </div>
-        </div>
-      </section> -->
       <?php
       // BLOGセクションに出す最新の記事（記事データの先頭から3件まで）。記事を追加すると自動で入れ替わる
       $topArticles = array_slice(require __DIR__ . '/blog/data/articles.php', 0, 3);

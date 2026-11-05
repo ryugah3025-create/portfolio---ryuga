@@ -839,15 +839,13 @@ html.is-loading footer * {
   position: relative;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
+  background: #fff;
 }
 @supports (height: 100dvh) {
   .mv-pin-wrap {
     height: 100dvh;
   }
-}
-.mv-pin-wrap {
-  overflow: hidden;
-  background: #fff;
 }
 
 #js-mainvisual {
@@ -912,7 +910,7 @@ html.is-loading footer * {
     width: calc(100% - 20px);
     padding: 0;
     letter-spacing: 0.02em;
-    font-size: min(clamp(18px, 5.2vw, 24px), calc((100vw - 20px) / 18.4));
+    font-size: min(clamp(18px, 5.2vw, 24px), (100vw - 20px) / 18.4);
     line-height: 2.1;
   }
   .mv-message-inner p {
@@ -1111,16 +1109,16 @@ html.is-loading footer * {
   }
 }
 
-.about-scroll.is-sticky .about-scroll-pin {
-  position: sticky;
-  top: 0;
-}
 .about-scroll {
   margin: 0;
   background: #f9ebca;
   color: #4a2403;
   --about-vh: 100vh;
   --about-head-top: 120px;
+}
+.about-scroll.is-sticky .about-scroll-pin {
+  position: sticky;
+  top: 0;
 }
 @media screen and (max-width: 767px) {
   .about-scroll {
@@ -1495,6 +1493,156 @@ html.is-loading footer * {
   left: 0;
   width: 100%;
   will-change: transform;
+}
+
+.problem {
+  --u: min(1px, 100vw / 1600);
+  position: relative;
+  padding: calc(var(--u) * 129) 0 calc(var(--u) * 125);
+  background: #fff;
+  color: #000;
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: 400;
+  overflow: hidden;
+}
+@media screen and (max-width: 767px) {
+  .problem {
+    padding: 96px 16px 104px;
+  }
+}
+.problem * {
+  font-family: inherit;
+  font-style: normal;
+}
+.problem .problem-bigmark {
+  --mark-shift: 5.8%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% calc(-50% - var(--mark-shift));
+  font-size: calc(var(--u) * 1200);
+  line-height: 1;
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-bigmark {
+    font-size: min(200vw, 1000px);
+  }
+}
+.problem .problem-title {
+  position: relative;
+  z-index: 1;
+  font-size: calc(var(--u) * 40);
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-title {
+    font-size: 22px;
+  }
+}
+.problem .problem-title--bottom {
+  margin-top: calc(var(--u) * 120);
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-title--bottom {
+    margin-top: 64px;
+  }
+}
+.problem .problem-list {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  margin: calc(var(--u) * 78) auto 0;
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-list {
+    width: auto;
+    margin: 56px 0 0;
+  }
+}
+.problem .problem-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 293) auto;
+  align-items: end;
+  width: calc(var(--u) * 1000);
+  padding-bottom: calc(var(--u) * 40);
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-row {
+    display: block;
+    width: auto;
+    padding-bottom: 24px;
+  }
+}
+.problem .problem-row + .problem-row {
+  margin-top: calc(var(--u) * 54);
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-row + .problem-row {
+    margin-top: 32px;
+  }
+}
+.problem .problem-row + .problem-row--trust {
+  margin-top: calc(var(--u) * 60);
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-row + .problem-row--trust {
+    margin-top: 32px;
+  }
+}
+.problem .problem-label {
+  width: calc(var(--u) * 300);
+  font-size: calc(var(--u) * 120);
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-label {
+    width: auto;
+    font-size: 56px;
+    text-align: left;
+  }
+}
+.problem .problem-text {
+  font-size: calc(var(--u) * 32);
+  line-height: 1.2;
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-text {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+}
+.problem .problem-row--customer .problem-text {
+  width: calc(var(--u) * 644);
+}
+.problem .problem-row--trust .problem-text {
+  width: calc(var(--u) * 692);
+}
+@media screen and (max-width: 767px) {
+  .problem .problem-row--customer .problem-text,
+  .problem .problem-row--trust .problem-text {
+    width: auto;
+  }
+}
+.problem .problem-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #000;
+  transform-origin: left center;
 }
 
 #back-bn.in {
@@ -2086,14 +2234,12 @@ html.works-list-page main.work {
   background: #fff;
   container-type: size;
   --wc: min(100cqw, calc(100cqh * 1603 / 1540));
+  --cu: calc(var(--wc) / 1603);
 }
 @supports (height: 100dvh) {
   .about-fv-pin {
     height: 100dvh;
   }
-}
-.about-fv-pin {
-  --cu: calc(var(--wc) / 1603);
 }
 @media screen and (max-width: 767px) {
   .about-fv-pin {
@@ -2775,3 +2921,5 @@ main .about-area .about-wrap .text-area p + p {
     padding: 16px 0;
   }
 }
+
+/*# sourceMappingURL=style.css.map */

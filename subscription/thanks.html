@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>送信が完了しました | 原龍我</title>
+  <!-- 送信後だけに表示するページなので、検索結果には出さない -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/subscription/img/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@500;700&display=swap">
+  <style>
+    /* Web運用パートナープランのLP（index.html）と同じ配色・文字にそろえる */
+    :root {
+      --bg: #ffffff;
+      --ink: #111111;
+      --ink-soft: #333333;
+      --ink-faint: #777777;
+      --line: #e3e0db;
+      --cta: #111111;
+      --radius: 4px;
+      --serif: 'Zen Old Mincho', serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      letter-spacing: .02em;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; }
+    h1, p, ul { margin: 0; padding: 0; }
+    ul { list-style: none; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- ヘッダー ---------- */
+    .header { border-bottom: 1px solid var(--line); }
+    .header-inner { display: flex; align-items: center; height: 92px; }
+    .header-logo { display: block; }
+    .header-logo img { width: 72px; height: 72px; }
+
+    /* ---------- 送信完了 ---------- */
+    .thanks {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 120px 0;
+      text-align: center;
+    }
+    .thanks-face { width: 120px; margin: 0 auto; }
+    .thanks-label { margin-top: 32px; font-size: 13px; font-weight: 500; color: var(--ink-faint); }
+    .thanks-title {
+      margin-top: 8px;
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .thanks-title { word-break: keep-all; overflow-wrap: anywhere; }
+    .thanks-text { max-width: 40em; margin: 28px auto 0; color: var(--ink-soft); line-height: 2; }
+    .thanks-note {
+      max-width: 36em;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--ink-faint);
+    }
+
+    .thanks-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 48px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 60px;
+      padding: 0 40px;
+      border: 1px solid var(--cta);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--cta);
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background .2s, color .2s;
+    }
+    /* ホバーで色を反転する（LPのボタンと同じ） */
+    @media (hover: hover) { .btn:hover { background: var(--cta); color: #fff; } }
+    .btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    /* ---------- フッター ---------- */
+    .footer { padding: 40px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-faint); }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+    .footer-links a { text-decoration: none; color: var(--ink-soft); }
+    @media (hover: hover) { .footer-links a:hover { text-decoration: underline; } }
+
+    /* 開いたときに、下からふわっと表示する */
+    .reveal { animation: reveal .8s ease both; }
+    .reveal:nth-child(2) { animation-delay: .1s; }
+    .reveal:nth-child(3) { animation-delay: .2s; }
+    .reveal:nth-child(4) { animation-delay: .3s; }
+    .reveal:nth-child(5) { animation-delay: .4s; }
+    .reveal:nth-child(6) { animation-delay: .5s; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(16px); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; }
+    }
+
+    @media (max-width: 767px) {
+      .wrap { padding: 0 16px; }
+      .header-inner { height: 72px; }
+      .header-logo img { width: 56px; height: 56px; }
+      .thanks { padding: 80px 0; }
+      .thanks-face { width: 96px; }
+      .thanks-text, .thanks-note { text-align: left; }
+      .thanks-text br { display: none; }
+      .thanks-actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .footer-copy { width: 100%; }
+    }
+    /* 外部リンクの矢印。矢印の文字はスマホで絵文字になり見た目が変わるので、線画のアイコンにする */
+    .icon-ext { display: inline-block; width: 14px; height: 14px; flex-shrink: 0; vertical-align: -1px; }
+    .btn .icon-ext { width: 18px; height: 18px; }
+    .modal-link .icon-ext { margin-left: 4px; }
+  </style>
+</head>
+
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="icon-external" viewBox="0 0 16 16">
+      <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M3.5 12.5 12.5 3.5M5 3.5h7.5V11" />
+    </symbol>
+    <symbol id="icon-line" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 3C6.48 3 2 6.58 2 11c0 2.52 1.45 4.76 3.72 6.23L5 21l4.2-2.3c.9.2 1.83.3 2.8.3 5.52 0 10-3.58 10-8s-4.48-8-10-8Z" />
+    </symbol>
+  </svg>
+
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="header-logo" href="/"><img src="/subscription/img/header-logo.png" alt="原龍我" width="225" height="225"></a>
+    </div>
+  </header>
+
+  <main class="thanks">
+    <div class="wrap">
+      <img class="thanks-face reveal" src="/subscription/img/header-logo.png" alt="" width="225" height="225">
+      <p class="thanks-label reveal">送信完了</p>
+      <h1 class="thanks-title reveal">ご相談、<wbr>ありがとうございます。</h1>
+      <p class="thanks-text reveal">内容を確認のうえ、ご入力いただいたメールアドレスへ、<br>最短当日にご連絡いたします。<br>いただいた課題と現状のサイトを分析し、改善案をご提案させていただきます。</p>
+      <p class="thanks-note reveal">数日たっても返信が届かない場合は、迷惑メールフォルダをご確認いただくか、お手数ですがLINEからご連絡ください。</p>
+      <div class="thanks-actions reveal">
+        <a class="btn" href="/subscription/">プランのページに戻る</a>
+        <a class="btn" href="https://lin.ee/VNnLIPN" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#icon-line" /></svg>LINEで相談</a>
+        <a class="btn" href="https://ryuga325.digick.jp/" target="_blank" rel="noopener">原龍我のサイトを見る<svg class="icon-ext" aria-hidden="true"><use href="#icon-external" /></svg></a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <ul class="footer-links">
+        <li><a href="/">ポートフォリオ</a></li>
+        <li><a href="/subscription/policy.html">プライバシーポリシー</a></li>
+      </ul>
+      <p class="footer-copy">© 2026 原龍我</p>
+    </div>
+  </footer>
+</body>
+
+</html>
